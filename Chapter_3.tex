@@ -1,0 +1,402 @@
+\chapter{Numerical Analysis}
+The Euler-Poisson scheme is constructed on a random grid that is supported on the interval that can be smaller or bigger than $[0, \, T]$. The mean squared error described in (\ref{eq6}) is decomposed into two components, namely, the discretization error and the hitting error. In order to establish the proposed ideas, let the mean squared error be written as
+\begin{equation}\label{eq10}
+    |Y_T - \tilde{Y}_{t_n}| = |Y_T - \hat{Y}_{t_n}| \leq |Y_T - \hat{Y}_{T}| +    |\hat{Y}_{T} - \hat{Y}_{t_n} |
+\end{equation}
+where the term $|Y_T - \hat{Y}_{T}|$ corresponds to the discretization error; a measure of variation between the exact solution and the approximation proposed by the Euler-Poisson scheme on $[0, \, T]$; $|\hat{Y}_{T} - \hat{Y}_{t_n}|$ corresponds to the hitting error which accounts for the deviation of the Euler-Poisson scheme on $[t_n, \, T]$. Both errors are described in the following sections.
+
+\section{The Discretization Error}
+Heuristically, the discretization error should be an analog of the traditional Euler scheme with equally-spaced grid points. In order to show this, we first present a technical lemma with result for $\hat{Y}$ similar to the one described in Theorem \ref{Thm_2_1}  for $Y$.
+
+\begin{lemma}\label{lem2_1}
+Under the assumptions of Theorem \ref{Thm_2_1}, the process $\hat{Y}$ defined in (\ref{eq7}) is adapted to the enlarged filtration $\mathcal{F}^{\xi} \bigvee \mathcal{F}^{X} := \sigma (\mathcal{F}^{\xi} \bigcup \mathcal{F}^{X})$ such that
+    \begin{enumerate}[label=(\roman*)]
+        \item $\mathbb{E}[\sup_{t \in [0, T]} |\hat{Y}_t|^2] \leq \mathbf{C}_3$, \label{lemma_1}
+        \item $\mathbb{E}[\sup_{t \in [0, T]} |\hat{Y}_t|^2  |\mathcal{F}^{\xi} ] \leq \mathbf{C}_3$, \label{lemma_2}
+    \end{enumerate}
+where $\mathbf{C}_3$ is a positive constant depending on $k \in \mathbb{R}_+$ and $T$ only. 
+\end{lemma}
+The proof of the lemma is achieved along the standard argument for proving bounds for second moments. As we shall see, the standard combination of Gronwall's inequality (cf. Theorem \ref{Append_Gron_ineq}) together with Doob's
+inequality (cf. \eqref{Append_Doob_ineq}) yields the desired results.
+\begin{proof}
+That $\hat{Y}$ is adapted is clear from the left-hand side of (\ref{eq7}) since it is almost surely a measurable function in the initial value $y_0$, and the processes $(W_s)_{s \leq t}$ and $(L_s)_{s \leq t}$ driving the stochastic differential equation up to time $t$. The square integrability property follows from the proof of Lemma \ref{lem2_1}\ref{lemma_1} which shall be shown in the following.
+
+By the L\'evy-It\^o decomposition of the L\'evy process $X$ in (\ref{eq_4}) and the definition of $\hat{Y}_{t}$, we have that
+\begin{equation*}
+\hat{Y}_{t} = y_0 + \int^t_{0} a(\hat{Y}_{\iota(s)}) b ds + \int^t_{0} a(\hat{Y}_{\iota(s-)})d(\Sigma W_s) + \int^t_{0} a(\hat{Y}_{\iota(s-)})d(L_s), \qquad t \in [0, t_n \lor T].
+\end{equation*}
+Further, for $t \in [0, \, T]$ define the following stopping time
+\begin{equation*}
+    \sigma_N := \inf \{t > 0 \,\, ; |\hat{Y}_{t}| > N \}.
+\end{equation*}
+From the foregoing we have that
+\begin{equation}\label{eq11}
+    \begin{aligned}
+        |\hat{Y}_{t  \land \sigma_N}|^2 &=  \bigg| y_0 + \int^{t \land \sigma_N}_{0} a(\hat{Y}_{\iota(s)}) bds \\
+            &\qquad\qquad\qquad+ \int^{t \land \sigma_N}_{0} a(\hat{Y}_{\iota(s-)})d(\Sigma W_s) + \int^{t \land \sigma_N}_{0} a(\hat{Y}_{\iota(s-)})d(L_s) \bigg|^2 \\
+            \frac{1}{4} |\hat{Y}_{t  \land \sigma_N}|^2 &\leq  |y_0|^2 + \bigg|\underbrace{\int^{t \land \sigma_N}_{0} a(\hat{Y}_{\iota(s)})bds}_{=:(\mathcal{J}_t)}\bigg|^2 + \bigg|\underbrace{\int^{t \land \sigma_N}_{0}a(\hat{Y}_{\iota(s-)})d(\Sigma W_s)}_{=:(\mathcal{J}^{*}_t)} \bigg|^2 \\
+            &\qquad\qquad\qquad+ \bigg|\underbrace{\int^{t \land \sigma_N}_{0}a(\hat{Y}_{\iota(s-)})d(L_s)}_{=:(\mathcal{J}^{**}_t)} \bigg|^2,
+     \end{aligned}
+\end{equation}
+where the second inequality holds by the application of \break $(a + b + c+d)^2 \leq 4(a^2+b^2+c^2+d^2), \, \, a,b,c,d \in \mathbb{R} $. Using the Cauchy-Schwartz inequality (cf. \eqref{Appendix_CS}) combined with the definition of the stopping time $\sigma_N$, one obtains %and the third inequality follows from the Cauchy-Schwartz inequality. Using the Lipschitz condition of $a(\cdot)$ its linear growth condition is derived thus:
+\begin{equation}
+    \mathbb{E}[|(\mathcal{J}_t)|^2] \leq tk^2 \mathbb{E}\bigg[ \int^{t \land \sigma_N}_{0} |a(\hat{Y}_{\iota(s)})|^2ds\bigg] \leq  N^2 \mathbf{C}_0  \int^t_{0} (1 + |N|^2)ds < \infty,
+\end{equation}
+for a constant $\mathbf{C}_0$ depending on $k$ and $T$ only. Moreover, the It\^o isometry guarantees that 
+\begin{equation}\label{eqj_t}
+    \mathbb{E}[|(\mathcal{J}^{*}_t)|^2] \leq k^2  \mathbb{E}\bigg[\int^{t \land \sigma_N}_{0}\big|a(\hat{Y}_{\iota(s)})\big|^2 ds  \bigg] \leq  N^2 \mathbf{C}_0  \int^t_{0} (1 + |N|^2)ds < \infty.
+\end{equation}
+Observe that a similar bound holds for $\mathcal{J}^{**}_t$ as in (\ref{eqj_t}) above.  Hence we conclude that the integrals denoted by $\mathcal{J}^{*}_t$ and $\mathcal{J}^{**}_t$ are square-integrable martingales.
+Using the assumptions of Lipschitz conditions from Theorem \ref{Thm_2_1}, the linear growth bounds of $a(x)$ is given as
+\begin{equation}\label{eq12}
+    \begin{aligned}
+        |a(x)|^2 &= |a(x) - a(y_0) + a(y_0)|^2 \\
+        &\leq |k|x-y_0| + k|^2 \leq 2(k^2|x-y_0|^2 + k^2)\\
+        &\leq 2k^2(2|x|^2 + 2k^2) + 2k^2 \leq 4k^2|x|^2 + 2k^2(2k^2+1)\\
+        &\leq \mathbf{C}_0(1 + |x|^2),
+    \end{aligned}
+\end{equation}
+for a constant $\mathbf{C}_0$ depending on $k$ and $T$ only. Hence %The stochastic integral in (\ref{eq7}) is a well defined square integrable local martingale and the boundedness of the coefficient guarantees the local square inegrability of the integrand. Since by definition, $\hat{Y}_{t  \land \sigma_N}$ is a stopped process, we conclude that the stochastic integrals in (\ref{eq11}) are square integrable martingales. Hence,
+\begin{multline}\label{jandj}
+    \frac{1}{4}\mathbb{E}\big[\sup_{r \leq t  \land \sigma_N}|\hat{Y}_r|^2\big] \leq k^2 
+              + tk^2 \mathbb{E}\bigg[ \int^{t \land \sigma_N}_{0} |a(\hat{Y}_{\iota(s)})|^2ds\bigg]  \\
+              +\mathbb{E}\bigg[\sup_{r \leq t  \land \sigma_N}\bigg|\int^{t \land \sigma_N}_{0}a(\hat{Y}_{\iota(s-)})d(\Sigma W_s)\bigg|^2 \bigg]
+              + \mathbb{E}\bigg[\sup_{r \leq t  \land \sigma_N}\bigg|\int^{t \land \sigma_N}_{0}a(\hat{Y}_{\iota(s-)})d(L_s) \bigg|^2 \bigg],
+\end{multline}
+and by the application of Doob's inequality and It\^o isometry we obtain
+\begin{equation}\label{j}
+    \mathbb{E}\big[\sup_{r \leq t  \land \sigma_N}|\mathcal{J}^{*}_r|^2\big] \leq 4 \mathbb{E}\big[\mathcal{J}^{*2}_{t \land \sigma_N}\big] \leq 4 k^2  \mathbb{E}\bigg[\int^{t \land \sigma_N}_{0}\big|a(\hat{Y}_{\iota(s)})\big|^2 ds  \bigg],
+\end{equation}
+and, similarly,
+\begin{equation}\label{j*}
+    \mathbb{E}\big[\sup_{r \leq t  \land \sigma_N}|\mathcal{J}^{**}_r|^2\big] \leq 4 \mathbb{E}\big[\mathcal{J}^{**2}_{t \land \sigma_N}\big] \leq 4 k^2  \mathbb{E}\bigg[\int^{t \land \sigma_N}_{0}\big|a(\hat{Y}_{\iota(s)})\big|^2 ds  \bigg].
+\end{equation}
+The following holds by substitution of (\ref{j}) and (\ref{j*}) into (\ref{jandj}) together with the bound provided in (\ref{eq12}):
+\begin{equation}
+    \begin{aligned}
+        \frac{1}{4} \mathbb{E}[\sup_{r \leq t  \land \sigma_N}|\hat{Y}_r|^2]
+        &\leq k^2 + (tk^2 + 8k^2)\bigg(\mathbf{C}_0 \mathbb{E}\bigg[ \int^{t \land \sigma_N}_{0} \big( 1 + |\hat{Y}_{\iota(s)}|^2 \big)ds \bigg]\bigg)\\
+        &\leq k^2 + (tk^2 + 8k^2)\bigg( \mathbf{C}_0 t + \mathbf{C}_0 \mathbb{E}\bigg[ \int^{t \land \sigma_N}_{0}  |\hat{Y}_{\iota(s)}|^2 ds \bigg] \bigg)\\
+        &\leq \mathfrak{c}_1 \bigg(1 + \int^{t}_{0}\mathbb{E}[\sup_{r \leq s  \land \sigma_N}|\hat{Y}_r|^2]ds \bigg),
+    \end{aligned}
+\end{equation}
+where $\mathfrak{c}_1 \in \mathbb{R}$ depends on $k$ and $T$ only. Finally, Gronwall's inequality gives
+\begin{equation*}
+    \begin{aligned}
+        \mathbb{E}[\sup_{r \leq t  \land \sigma_N}|\hat{Y}_r|^2] &\leq 4 \mathfrak{c}_1 \bigg(1 + \int^{t}_{0}\mathbb{E}[\sup_{r \leq s  \land \sigma_N}|\hat{Y}_r|^2]ds \bigg)\\
+        &\leq 4\mathfrak{c}_1e^{4\mathfrak{c}_1t} \leq 4\mathfrak{c}_1e^{4\mathfrak{c}_1T} = \mathbf{C}_3.
+    \end{aligned}
+\end{equation*}
+Finally, the assertion of Lemma \ref{lem2_1}\ref{lemma_1} follows by letting $N \to \infty$, while for that of Lemma \ref{lem2_1}\ref{lemma_2}, one observes that $X$ is independent of $\mathcal{F}^{\xi}$. Hence, the stochastic integrals $\mathcal{J}^{*}$ and $\mathcal{J}^{**}$  are martingales with respect to $\mathcal{F}^{X}$. Furthermore,
+\begin{equation*} 
+    \begin{split}
+     \frac{1}{4} \mathbb{E}[\sup_{r \leq t  \land \sigma_N}|\hat{Y}_r|^2|\mathcal{F}^{\xi}] &\leq  |y_0|^2 +\mathbb{E} \bigg[ \bigg|\int^{t \land \sigma_N}_{0} a(\hat{Y}_{\iota(s)})bds \bigg|^2\mathcal{F}^{\xi} \bigg] \\
+      &\,+ \mathbb{E} \bigg[ \bigg|\int^{t \land \sigma_N}_{0}a(\hat{Y}_{\iota(s-)})d(\Sigma W_s)\bigg|^2\mathcal{F}^{\xi} \bigg] +\bigg|\int^{t \land \sigma_N}_{0}a(\hat{Y}_{\iota(s-)})d(L_s) \bigg|^2\mathcal{F}^{\xi} \bigg] \\
+        &\leq k^2 + tk^2 \mathbb{E}\bigg[\int^{t \land \sigma_N}_{0} |a(\hat{Y}_{\iota(s)})|^2ds \bigg] + 8k^2 \mathbb{E}\bigg[\int^{t \land \sigma_N}_{0} |a(\hat{Y}_{\iota(s)})|^2ds \bigg],
+    \end{split}
+\end{equation*}
+and every other step carries on from Lemma \ref{lem2_1}\ref{lemma_1} using the conditional version of Doob's inequality  as well as the conditional version of It\^o isometry (cf. \morecite{ferreiro2016euler}, Section 3.1). Therefore
+\begin{equation*}
+    \begin{aligned}
+         \mathbb{E}[\sup_{r \leq t  \land \sigma_N}|\hat{Y}_r|^2|\mathcal{F}^{\xi}]  &\leq 4\mathfrak{c}_1e^{3\mathfrak{c}_1t} \leq 4\mathfrak{c}_1e^{4\mathfrak{c}_1T} = \mathbf{C}_3.
+    \end{aligned}
+\end{equation*}
+\end{proof}
+The following theorem derives the asymptotic behavior for the discretization error which ultimately depends on the maximum random step seize $\tau$ defined in (\ref{eq8}). We shall apply the results of Proposition \ref{Mom_tau} for $\tau$:
+\begin{theorem}\label{Thm3_2}
+    Under the assumptions of Theorem \ref{Thm_2_1}, we have 
+    \begin{equation*}
+        \mathbb{E}[\sup_{t \in [0, \, T]} |Y_t - \hat{Y}_{t}|^2] \leq \mathbf{C}_4 [\tau^2 + 2 \tau] \lesssim \frac{\log(n)}{n},
+    \end{equation*}
+    where $\mathbf{C}_4$ is a positive constant depending on $k$ and $T$ only.
+\end{theorem}
+\begin{proof}
+    Let $t \in [0, \, T]$ and define 
+    \begin{multline}\label{eq13}
+          Z_t := Y_t - \hat{Y}_{t} = \int^t_{0} (a(Y_s) - a(\hat{Y}_{\iota(s)}))bds + \int^t_{0} (a(Y_{s-})-a(\hat{Y}_{\iota(s-)}))d(\Sigma W_s)\\ + \int^t_{0} (a(Y_{s-})-a(\hat{Y}_{\iota(s-)}))d(L_s).
+    \end{multline}
+Using the assertions of Lemma \ref{lem2_1}\ref{lemma_1} and Lemma \ref{lemma_2}, one concludes that stochastic integrals on the right-hand side of (\ref{eq13}) are square integrable martingales with respect to the filtration $\mathcal{F}^{\xi} \bigvee \mathcal{F}^{X}$. In the following, the first inequality follows from the application of the relation $(a + b + c)^2 \leq 3(a^2+b^2+c^2), \, \, a,b,c \in \mathbb{R} $ to  (\ref{eq13}); the second inequality is obtained by the successive applications of the Cauchy-Schwartz inequality, Doob's inequality and It\^o Isometry  as in (\ref{jandj}). Furthermore, the third and fifth inequalities hold due to the assumptions of Theorem \ref{Thm_2_1}  and the definition of $Z_t$, respectively.
+%\begin{equation}
+\begin{align}\label{eq14}
+    \frac{1}{3} \mathbb{E}[\sup_{r < t}|Z_r|^2] &\leq \mathbb{E} \bigg[\sup_{r<t}\bigg| \int^r_{0} (a(Y_s) - a(\hat{Y}_{\iota(s)}))bds \bigg|^2 \bigg] \nonumber \\ 
+    &\quad+ \mathbb{E} \bigg[ \sup_{r<t} \bigg| \int^r_{0} (a(Y_{s-})-a(\hat{Y}_{\iota(s-)}))d(\Sigma W_s) \bigg|^2 \bigg] \nonumber\\ 
+    &\quad\quad+ \mathbb{E} \bigg[ \sup_{r<t} \bigg| \int^r_{0} (a(Y_{s-})-a(\hat{Y}_{\iota(s-)}))d(L_s) \bigg|^2 \bigg] \nonumber \\
+    &\leq tk^2 \mathbb{E} \bigg[\int^t_{0} \big|(a(Y_s) - a(\hat{Y}_{\iota(s)}))\big|^2 ds  \bigg] + 4 \mathbb{E} \bigg[ \int^t_{0} \big|(a(Y_{s})-a(\hat{Y}_{\iota(s)}))\big|^2 ds  \bigg]\nonumber \\
+    &\qquad\qquad\qquad+ 4\mathbb{E} \bigg[ \int^t_{0} \big|(a(Y_{s})-a(\hat{Y}_{\iota(s)}))\big|^2 ds  \bigg]\\
+    &\leq tk^2 \mathbb{E}\bigg[\int^{t}_{0} |Y_s - \hat{Y}_{\iota(s)}|^2ds \bigg] + 8k^2 \mathbb{E}\bigg[\int^{t}_{0} |Y_s - \hat{Y}_{\iota(s)}|^2ds \bigg] \nonumber \\
+    &\leq (tk^2 + 8k^2) \bigg( \int^{t}_{0} \mathbb{E}[|Y_s - \hat{Y}_{s}|^2] + \mathbb{E}[|\hat{Y}_{s} - \hat{Y}_{\iota(s)}|^2] ds \bigg) \nonumber \\
+    &\leq \mathfrak{c}_2 \int^{t}_{0} \mathbb{E}[|Z_s|^2] + \mathbb{E}[|\hat{Y}_{s} - \hat{Y}_{\iota(s)}|^2] ds \nonumber \\
+    &\leq \mathfrak{c}_2 \int^{t}_{0} \mathbb{E}[\sup_{r < t}|Z_s|^2] + \mathbb{E}[|\hat{Y}_{s}-\hat{Y}_{\iota(s)}|^2] ds.\nonumber
+\end{align}
+%\end{equation}
+Our next objective is to apply the Gronwall's inequality to the last integral. In order to do this, we first compute a bound for $\mathbb{E}[|\hat{Y}_{s} - \hat{Y}_{\iota(s)}|^2]$. Using the growth condition of $a(x)$ obtained in (\ref{eq12}), we have that
+    %evaluate the last integral and bound by applying the Gronwall's inequality. but this in turn demands that $\mathbb{E}[|\hat{Y}_{s} - \hat{Y}_{\iota(s)}|^2]$ be estimated. Using the growth condition of $a(x)$ provided by (\ref{eq12}), we have that
+\begin{equation}\label{eq15}
+    \begin{aligned}
+         \mathbb{E}[|\hat{Y}_{s} - \hat{Y}_{\iota(s)}|^2] &= \mathbb{E}[|a(\hat{Y}_{\iota(s)})(X_s - X_{\iota(s)})|^2]\\
+         &\leq \mathbb{E}[|a(\hat{Y}_{\iota(s)})|^2]\mathbb{E}[|X_s - X_{\iota(s)}|^2]\\
+         &\leq \bigg( \mathbf{C}_0 \big( 1 + \mathbb{E}[|\hat{Y}_{\iota(s)}|^2] \big) \bigg)\mathbb{E}[|X_s - X_{\iota(s)}|^2]\\
+         &\leq \bigg( \mathbf{C}_0 \big( 1 + \mathbb{E}[|Z_{\iota(s)} + Y_{\iota(s)}|^2] \big) \bigg)\mathbb{E}[|X_s - X_{\iota(s)}|^2]\\
+        &\leq \bigg( \mathbf{C}_0 \big( 1 + 2\mathbb{E}[|Z_{\iota(s)}|^2] + 2\mathbb{E}[|Y_{\iota(s)}|^2] \big) \bigg)\mathbb{E}[|X_s - X_{\iota(s)}|^2],\\
+        \end{aligned}
+    \end{equation}
+where the third inequality holds by the relation $|\hat{Y}_{\iota(s)}| \leq |Z_{\iota(s)}| +|Y_{\iota(s)}| $, while the fourth inequality is due to the relation $(a + b)^2 \leq 2(a^2+b^2), \, a,b \in \mathbb{R} $.
+It remains to control $\mathbb{E}[|X_s - X_{\iota(s)}|^2]$ whose estimate follows from the knowledge of the increments of the stochastic process $X$: $|X_s - X_{\iota(s)}| \sim N(0, \, \Sigma^2|s - \iota(s)|) $ , i.e., $|X_s - X_{\iota(s)}|$ follows a Gaussian distribution with mean 0 and variance $\Sigma^2|s - \iota(s)|$. We thus have
+\begin{equation}\label{eq15b}
+    \begin{aligned}
+        \mathbb{E}[|X_s - X_{\iota(s)}|^2] &\leq \mathbb{E}\big[|\Sigma W_s - \Sigma W_{\iota(s)}|^2 + |L_s - L_{\iota(s)}| + |b|^2|s - {\iota(s)}| \big]\\
+        &\leq k^2 \mathbb{E}\big[ |s - {\iota(s)}|^2 + |s - {\iota(s)}| + |s - {\iota(s)}| \big]\\
+        &\leq k^2 \mathbb{E} [\tau^2 + 2 \tau ] \leq k^2 \mathbb{E} [T^2 + 2T],
+    \end{aligned}
+\end{equation}
+where we have used the independence of the Wiener process and the random grid points in $(t_{i})_{i \geq 0}$, and the third inequality holds since two neighbouring time points in $(t_{i})_{i \geq 0}$ are at most $\tau$ units apart.
+Therefore, (\ref{eq15}) and (\ref{eq15b}), when substituted in (\ref{eq14}), together with Theorem \ref{Thm_2_1} yield
+\begin{equation*}
+    \mathbb{E}[\sup_{r < t}|Z_r|^2] \leq \mathfrak{c}_2 \bigg( \int^{t}_{0} \mathbb{E}[\sup_{r <t}|Z_s|^2] + \mathbb{E} [\tau^2 + 2 \tau] \bigg),
+\end{equation*}
+where the constant $k^2$ has been replaced by $\mathfrak{c}_2$ and thus
+\begin{equation*}
+      	\mathbb{E}[\sup_{t \in [0, T]}|Y_t - \hat{Y}_{t}|^2] \leq  \mathbb{E} [\tau^2 + 2 \tau]\mathfrak{c}_2e^{T\mathfrak{c}_2} = \mathbb{E} [\tau^2 + 2 \tau]\mathbf{C}_4
+\end{equation*}
+follows from Gronwall's inequality.
+\end{proof}
+
+\section{The Hitting Error}
+We next turn to deriving the results for the asymptotic behaviour of the hitting error. The hitting error as would be used in this section refers to the first time $\hat{Y}_{T} $ hits $ \hat{Y}_{t_n}$ on $[0, \, T]$, i.e.,
+\begin{equation*}
+    |\hat{Y}_{T} - \hat{Y}_{t_n}| = \inf \{T, t_n \, \in [0, \, T] ; |\hat{Y}_{T}| \geq |\hat{Y}_{t_n}|\}.
+\end{equation*}
+It shall be shown that the error, in a sense, measures the rate at which at which the grid points $t_n$ converges to $T$, which is in turn controlled by the variance of the Gamma distribution. In order to see this, we present two technical lemmas that are similar in nature to Lemma \ref{lem2_1}.
+\begin{lemma}\label{lemm3_3}
+Under the assumptions of Theorem \ref{Thm_2_1}, the process $\hat{Y}$ defined in (\ref{eq7}) is adapted to $\mathcal{F}^{\xi} \bigvee \mathcal{F}^{X}$ and we have that 
+\begin{equation*}
+\max_{i \in [0, n]} \mathbb{E}[|\hat{Y}_{t_i}|^2] \leq \mathbf{C}_5,
+\end{equation*}
+where $\mathbf{C}_5$ depends on $k$ and $ T$ only, $ \, \mathbf{C}_5, k \in \mathbb{R}_+$, $T < \infty$.
+\end{lemma}
+\begin{proof}
+Fixing $i >  0$ and by recalling the definition of  $\hat{Y}$ given by (\ref{eq7}),  we write
+%\begin{equation}
+\begin{align}\label{eq16}
+        \mathbb{E}[|\hat{Y}_{t_i}|^2] &= \mathbb{E}[|\hat{Y}_{t_{i-1}} + a(\hat{Y}_{t_{i-1}})(X_{t_i} - X_{t_{i-1}})|^2] \nonumber \\
+        &= \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] + \mathbb{E}[|a(\hat{Y}_{t_{i-1}})|^2]\mathbb{E}[|X_{t_i} - X_{t_{i-1}}|^2] + 2\mathbb{E}[\hat{Y}_{t_{i-1}}^T a(\hat{Y}_{t_{i-1}})]\mathbb{E}[X_{t_i} - X_{t_{i-1}}] \nonumber \\
+        &\leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] + \mathbf{C}_0 \big(1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] \big) k^2 \big( \mathbb{E} |t_{i} - t_{i-1}|^2 + 2 \mathbb{E} |t_{i} - t_{i-1}| \big) \nonumber \\
+        &\qquad\qquad+  2 \sqrt{\mathbf{C}_0}  \big(1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] \big) k \mathbb{E} [|t_{i} - t_{i-1}|]\nonumber \\
+        &\leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] + \mathbf{C}_0  \big(1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] \big) 2 k^2 \big( \mathbb{E} |\xi|^2 + \mathbb{E} |\xi| \big) \nonumber \\
+        &\qquad\qquad+  2\sqrt{\mathbf{C}_0} \big( 1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] \big) k \mathbb{E}|\xi|\nonumber \\
+        &\leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] + \mathbf{C}_0 \big(1 +  \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] \big) 2k^2 \frac{T}{n} \bigg(1 + \frac{T}{n} \bigg) \\
+        &\qquad\qquad+ \sqrt{\mathbf{C}_0} \big( 1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] \big) 2k \frac{T}{n}\nonumber \\
+        &\leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2]\bigg( 1 + 2k^2 \frac{T}{n} \bigg(1 + \frac{T}{n} \bigg) +  \sqrt{\mathbf{C}_0}  2k \frac{T}{n} \bigg) \nonumber \\
+        &\qquad\qquad+ \mathbf{C}_0 2k^2 \frac{T}{n}  \bigg(1 + \frac{T}{n} \bigg) + \sqrt{\mathbf{C}_0}  2k \frac{T}{n}, \nonumber
+\end{align}
+%\end{equation}
+where we have used the knowledge of the moments of $t_{i} - t_{i-1} \overset{d}{=} Exponential(n/T)$ together with the following bounds which is derived from the growth condition of $a(x)$ : 
+\begin{equation*}
+    |x^T a(x)| \leq \sqrt{\mathbf{C}_0}\big(1 + |x|^2 \big).
+\end{equation*}
+It is evident from (\ref{eq16}) that there exists a constant $\mathfrak{c}_3$, depending on $K$ and $T$ only, such that 
+\begin{equation*}
+    \mathbb{E}[|\hat{Y}_{t_i}|^2] \leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2] \bigg( 1 + \frac{\mathfrak{c}_3}{n} \bigg) \leq |y_0|^2 \bigg( 1 + \frac{\mathfrak{c}_3}{n} \bigg)^i +  \exp{ \bigg(i \frac{\mathfrak{c}_3}{n} \bigg)} i \frac{\mathfrak{c}_3}{n},
+\end{equation*}
+which follows from the argument that
+\begin{equation}\label{rec_arg}
+    \begin{split}
+        \text{if} \qquad z_{m+1} &\leq  \varphi z_{m} + \psi, \quad \varphi \geq 1,\\
+        \text{then} \qquad z_{m} &\leq  \varphi^m z_{0} + \psi m e^{(m \varphi -m)}.
+    \end{split} 
+\end{equation}
+Finally using the fact that for $m, t, r \in \mathbb{R}_+$, $\lim_{m \to \infty}(1 + r/m)^{mt} = e^{rt} $, we have that
+\begin{equation*}
+\max_{i \in [0, n]} \mathbb{E}[|\hat{Y}_{t_i}|^2] \leq |y_0|^2 \bigg( 1 + \frac{\mathfrak{c}_3}{n} \bigg)^n +  e^{\mathfrak{c}_3}\mathfrak{c}_3 \leq e^{\mathfrak{c}_3}(k^2 + \mathfrak{c}_3)
+\end{equation*}
+which is the assertion of the lemma.
+\end{proof}
+
+\begin{lemma}\label{lemma34}
+Under the assumptions of Theorem \ref{Thm_2_1}, the process $\hat{Y}$ defined in (\ref{eq7}) is adapted to $\mathcal{F}^{\xi} \bigvee \mathcal{F}^{X}$ such that 
+\begin{enumerate}[label=(\roman*)]
+    \item $\mathbb{E}[\max_{i \in [0, n]}|\hat{Y}_{t_i}|^2] \leq \mathbf{C}_6 $, \label{lemma34_1}
+    \item $\mathbb{E} \bigg[ \big( \mathbb{E} \big[\max_{i \in [0, n]}|\hat{Y}_{t_i}|^2|\mathcal{F}^{\xi} \big] \big)^2 \bigg] \leq \mathbf{C}_6$, \label{lemma34_2}
+\end{enumerate}
+where $\mathbf{C}_6$ is a positive constant depending on $k$ and $T$ only.
+\end{lemma}
+\begin{proof}
+For $i \in [0, \, n-1]$, define $\Delta \hat{Y}_i := \hat{Y}_{t_{i+1}} - \hat{Y}_{t_{i}}$. By similar arguments applied in (\ref{eq16}) and Lemma \ref{lemm3_3}, we have that
+\begin{equation*}
+    \begin{split}
+        \mathbb{E}[|\Delta \hat{Y}_{t_{i}}|^2] &= \mathbb{E}[|a(\hat{Y}_{t_{i}})|^2]\mathbb{E}[|X_{t_{i+1}} - X_{t_{i}}|^2]\\
+        &\leq  \big(\mathbf{C}_0 (1 + \mathbb{E}[|\hat{Y}_{t_{i}}|^2]) \big)2k^2 \frac{T}{n} \bigg(1 + \frac{T}{n} \bigg)\\
+        &\leq \big(\mathbf{C}_0 (1 + \mathbf{C}_5) \big)2k^2 \frac{T}{n} \bigg(1 + \frac{T}{n} \bigg).
+    \end{split}
+\end{equation*}
+Therefore
+\begin{equation}\label{eq_17}
+     \max_{i \in [0, n-1]}\mathbb{E}[|\Delta \hat{Y}_{t_{i}}|^2] \leq \frac{\mathfrak{c}_4}{n},
+\end{equation}
+for some constants $\mathfrak{c}_4$ depending on $k$ and $T$ only. For $i \in [0, n-1]$, define the  auxiliary random variables 
+\begin{equation}
+    Z_i := \Delta \hat{Y}_{t_{i}} -  \mathbb{E}[\Delta \hat{Y}_{t_{i}}|\mathcal{G}_{i}]
+\end{equation}
+using the filtration $\mathcal{G}_{i} := \sigma( \hat{Y}_{t_{j}} ; \,  j \in [0, i])$. Due to the tower property of conditional expectation and the fact that $Z_i$ is $\mathcal{G}_{i+1}$-measurable, one can easily show that $\sum_{j=0}^i Z_j$ is a martingale such that $\mathbb{E}[Z_i Z_j] = 0$ for $i \neq j$, $i, j \in [0, n-1]$. We can thus write
+\begin{equation}\label{eq_18}
+\begin{split}
+    \max_{i \in [0, n]}|\Delta \hat{Y}_{t_{i}}|^2 &\leq \bigg(|y_0|^2 +  \max_{i \in [0, n-1]} \bigg| \sum_{j=0}^i \Delta \hat{Y}_{t_{j}} \bigg|^2\bigg)\\
+    &= \bigg(|y_0|^2 +  \max_{i \in [0, n-1]} \bigg| \sum_{j=0}^i Z_j + \mathbb{E}[\Delta \hat{Y}_{t_{j}}|\mathcal{G}_{j}] \bigg|^2\bigg)\\
+    &\leq  2 \bigg(|y_0|^2 + 2 \underbrace{\max_{i \in [0, n-1]} \bigg| \sum_{j=0}^i Z_j  \bigg|^2}_{{=:(\tilde{\mathcal{J}}_t)}}  + 2 \underbrace{\max_{i \in [0, n-1]} \bigg| \sum_{j=0}^i \mathbb{E}[\Delta \hat{Y}_{t_{j}}|\mathcal{G}_{j}] \bigg|^2}_{{=:(\tilde{\mathcal{J}}^{*}_t)}}\bigg).
+\end{split}
+\end{equation}
+Furthermore, we have that
+\begin{equation*}
+    \begin{split}
+        \mathbb{E}[(\tilde{\mathcal{J}}_t)] &= \mathbb{E}\bigg[\max_{i \in [0, n-1]} \bigg| \sum_{j=0}^i Z_j  \bigg|^2\bigg] \leq \mathbb{E}\bigg[ \sum_{j=0}^{n-1} \big|Z_j  \big|^2\bigg]\\
+        &\leq 2 \mathbb{E}\bigg[ \sum_{j=0}^{n-1} |\Delta \hat{Y}_{t_{j}}|^2 + |\mathbb{E}[\Delta \hat{Y}_{t_{j}}|\mathcal{G}_{j}]|^2\bigg]\\
+        &\leq 4  \sum_{j=0}^{n-1} \mathbb{E} \big[ |\Delta \hat{Y}_{t_{j}}|^2 \big] \leq 4 \mathfrak{c}_4,
+    \end{split}
+\end{equation*}
+where the first inequality results from Doob's inequality and the fact that $(\tilde{\mathcal{J}}_t)$ is a sum of uncorrelated random variables; the second inequality holds by the combination of the definition of $Z_i$ and the relation $(a + b)^2 \leq 2(a^2+b^2), \, a,b \in \mathbb{R}$; the third and fourth inequalities follow from Jensen's inequality and the bound given in (\ref{eq_17}), respectively.
+Likewise, using Lemma \ref{lemm3_3} one has that
+\begin{equation*}
+    \begin{split}
+        \mathbb{E}[(\tilde{\mathcal{J}}^{*}_t)] &= \mathbb{E}\bigg[\max_{i \in [0, n-1]} \bigg| \sum_{j=0}^i \Delta \hat{Y}_{t_{j}}|\mathcal{G}_{j}]  \bigg|^2\bigg] \leq \mathbb{E}\bigg[\bigg(\sum_{j=0}^{n-1} |\mathbb{E}[\Delta \hat{Y}_{t_{j}}|\mathcal{G}_{j}]|\bigg)^2 \bigg]\\
+        &= \mathbb{E}\bigg[\bigg(\sum_{j=0}^{n-1} |a(\hat{Y}_{t_{j}}) \mathbb{E}[t_{j+1} - t_{j}]|\bigg)^2 \bigg]\\
+         &\leq \mathbb{E}\bigg[\bigg(\sum_{j=0}^{n-1} |a(\hat{Y}_{t_{j}})|k \dfrac{T}{n}\bigg)^2 \bigg]
+         \leq k^2 T^2 \big(\mathbf{C}_0 (1 + \mathbf{C}_5) \big).
+    \end{split}
+\end{equation*}
+From (\ref{eq_18}) we have that 
+\begin{equation*}
+    \begin{split}
+        \max_{i \in [0, n]}|\Delta \hat{Y}_{t_{i}}|^2 &\leq 2(|y_0|^2 + 2 \mathbb{E}[(\tilde{\mathcal{J}}_t)] + 2 \mathbb{E}[(\tilde{\mathcal{J}}^{*}_t)])\\
+        &\leq 2 (k^2 + 8 \mathfrak{c}_4 + 2 k^2 T^2 (\mathbf{C}_0 (1 + \mathbf{C}_5)))= \mathbf{C}_6.
+    \end{split}
+\end{equation*}
+We are now in the position to prove the second part of the Lemma, consider the filtration $\mathcal{G}_{i} := \mathcal{F}^{\xi} \, \bigvee \sigma( \hat{Y}_{t_{j}} ; \,  j \in [0, i])$. The procedure that produced (\ref{eq_18}) similarly yields
+\begin{equation*}
+    \mathbb{E} \big[\max_{i \in [0, n]}|\hat{Y}_{t_i}|^2|\mathcal{F}^{\xi} \big] \leq 2(|y_0|^2 + 2 \mathbb{E}[(\tilde{\mathcal{J}}_t)|\mathcal{F}^{\xi}] + 2 \mathbb{E}[(\tilde{\mathcal{J}}^{*}_t) |\mathcal{F}^{\xi}]).
+\end{equation*}
+By definition of $\Delta \hat{Y}_{t_{i}}$, one obtains
+\begin{equation}\label{eq19}
+    \begin{split}
+        \mathbb{E}[(\tilde{\mathcal{J}}_t)|\mathcal{F}^{\xi}] = 4  \sum_{j=0}^{n-1} \mathbb{E} \big[ |\Delta \hat{Y}_{t_{j}}|^2 |\mathcal{F}^{\xi} \big] 
+        &\leq 4 \max_{i \in [0, n-1]} \big| \mathbb{E}[|a(\hat{Y}_{t_{i}})|^2 |X_{t_{i+1}} - X_{t_{i}}|^2] |\mathcal{F}^{\xi} \big|\\
+        &\leq 4 \max_{i \in [0, n-1]} \big| \mathbb{E}[|a(\hat{Y}_{t_{i}})|^2 |\mathcal{F}^{\xi}] 2 k^2 (\xi_{i+1}^2 + \xi_{i+1}) \big|\\
+        &\leq 8 k^2 \max_{i \in [0, n-1]} \mathbb{E}[|a(\hat{Y}_{t_{i}})|^2 |\mathcal{F}^{\xi}] \sum_{j=0}^{n} \xi_{j} (1 + \xi_{j}),
+    \end{split}
+\end{equation}
+and, similarly,
+\begin{equation}\label{eq20}
+    \begin{split}
+        \mathbb{E}[(\tilde{\mathcal{J}}^{*}_t) |\mathcal{F}^{\xi}] &\leq \mathbb{E}\bigg[\bigg(\sum_{j=0}^{n-1} |a(\hat{Y}_{t_{i}})|k \xi_{j} \bigg)^2 \bigg| \mathcal{F}^{\xi} \bigg] \leq k^2  \max_{i \in [0, n-1]} \mathbb{E}[|a(\hat{Y}_{t_{i}})|^2 |\mathcal{F}^{\xi}] n \sum_{j=0}^{n} \xi_{j}^2.
+    \end{split}
+\end{equation}
+Hence it suffices to use (\ref{eq_18}) and then show that 
+\begin{equation}\label{to_hold}
+  \mathbb{E}[(\mathbb{E}[(\tilde{\mathcal{J}}_t)|\mathcal{F}^{\xi}])^2 + (\mathbb{E}[(\tilde{\mathcal{J}}^{*}_t) |\mathcal{F}^{\xi}])^2] \leq \mathfrak{c}_5
+\end{equation}
+for $\mathfrak{c}_5$ depending on $k$ and $T$ only, $\mathfrak{c}_5, \, k \in \mathbb{R}_+$ in order to complete the proof. Using the Cauchy-Schwartz inequality, a sufficient condition for \eqref{to_hold} is given by 
+\begin{equation}\label{eq3_12}
+   \mathbb{E} \Bigg[\bigg(\max_{i \in [0, n-1]} \mathbb{E}[|a(\hat{Y}_{t_{i}})|^2 |\mathcal{F}^{\xi}]\bigg)^4\Bigg] + \mathbb{E} \Bigg[\bigg(\sum_{j=0}^{n} \xi_{j} (1 + \xi_{j})\bigg)^4 + \bigg( n \sum_{j=0}^{n} \xi_{j}^2\bigg)^4\Bigg]\leq \mathfrak{c}_5
+\end{equation}
+where we have renamed $\mathfrak{c}_5$. Note that for ${m \geq 1}$, for any  $\xi \sim Exponential(n/T)$ we have $\mathbb{E}[\xi^m] = m! (\frac{T}{n})^m$. Using the inequality $(c + g)^{2n} \leq 2^{2n-1}(c^{2n} + g^{2n}), n=2, c,g \in \mathbb{R}$ and the fact that $\xi_i$, $i \geq 1$ are independent and identically distributed, it is easily seen that
+\begin{equation}\label{eq3_13}
+    \begin{split}
+        \mathbb{E} \Bigg[\bigg(\sum_{j=0}^{n} \xi_{j} (1 + \xi_{j})\bigg)^4 + \bigg( n \sum_{j=0}^{n} \xi_{j}^2\bigg)^4\Bigg] 
+        &\leq \big((n(\mathbb{E}[\xi] + \mathbb{E}[\xi^2]))^4 + (n^2\mathbb{E}[\xi^2])^4 \big)\\
+        &\leq 8 \bigg(4!T^4 + 8!\dfrac{T^8}{n^4}\bigg) + 8!T^8,
+   \end{split}
+\end{equation}
+and (\ref{eq3_12}) holds.
+Our next objective is to determine the bound of  $\mathbb{E}[|\hat{Y}_{t_{i}}|^2 |\mathcal{F}^{\xi}]$, which we do by incorporating the conditional expectation to the right-hand side of (\ref{eq16}), and, thus
+%\begin{equation}
+\begin{align}
+        \mathbb{E}[|\hat{Y}_{t_i}|^2|\mathcal{F}^{\xi}] 
+        &\leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2|\mathcal{F}^{\xi}] + \mathbf{C}_0 \big(1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2|\mathcal{F}^{\xi}] \big) k^2 \big( \mathbb{E} [|t_{i} - t_{i-1}|^2|\mathcal{F}^{\xi}] \nonumber \\
+        &\quad+ 2 \mathbb{E} [|t_{i} - t_{i-1}||\mathcal{F}^{\xi}]\big) +  2 \sqrt{\mathbf{C}_0} \big( 1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2|\mathcal{F}^{\xi}] \big) k \mathbb{E} [|t_{i} - t_{i-1}||\mathcal{F}^{\xi}]\nonumber \\
+        &\leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2|\mathcal{F}^{\xi}] + \mathbf{C}_0 \big( 1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2|\mathcal{F}^{\xi}] \big)  2k^2(\xi_i^2 + \xi_i) \\
+        &\qquad\qquad+  2 \sqrt{\mathbf{C}_0} \big(1 + \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2|\mathcal{F}^{\xi}] \big) k \xi_i\nonumber \\
+        &\leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2|\mathcal{F}^{\xi}]\big( 1 + 2k^2 \mathbf{C}_0 (\xi_i^2 + \xi_i) +  2k \sqrt{\mathbf{C}_0}   \xi_i \big) \nonumber \\
+        &\qquad\qquad + 2k^2 \mathbf{C}_0 (\xi_i^2 + \xi_i) + 2k \sqrt{\mathbf{C}_0}   \xi_i.  \nonumber
+\end{align}
+%\end{equation}
+Clearly, there exists a constant $\mathfrak{c}_6$ depending on $k$ only such that
+\begin{equation*}
+    \begin{split}
+        \mathbb{E}[|\hat{Y}_{t_i}|^2|\mathcal{F}^{\xi}] 
+        &\leq \mathbb{E}[|\hat{Y}_{t_{i-1}}|^2|\mathcal{F}^{\xi}]\big(1 + \mathfrak{c}_6(\xi_i^2 + \xi_i)\big) + \mathfrak{c}_6(\xi_i^2 + \xi_i) \\
+        &\leq|y_0|^2 \big(1 + \mathfrak{c}_6(\xi_i^2 + \xi_i)\big)^i + i \, \exp \big(i \, \mathfrak{c}_6(\xi_i^2 + \xi_i)\big) \, \mathfrak{c}_6(\xi_i^2 + \xi_i).
+    \end{split}
+\end{equation*}
+Using the an analogue of the recurrence argument in (\ref{rec_arg}), we conclude that  
+\begin{equation}\label{star_star}
+    \max_{i \in [0, n]} \mathbb{E}[|\hat{Y}_{t_{i}}|^2 |\mathcal{F}^{\xi}] \leq |y_0|^2 \prod_{i=1}^n \big(1 + \mathfrak{c}_6(\xi_i^2 + \xi_i)\big) + \sum_{i=1}^n \mathfrak{c}_6(\xi_i^2 + \xi_i) \prod_{j=i+1}^n \big(1 + \mathfrak{c}_6(\xi_j^2 + \xi_j)\big).
+\end{equation}
+A computation similar to \eqref{eq3_13} for the first term on the left-hand side of \eqref{eq3_12} combined with \eqref{star_star} yields
+%\begin{equation}
+    \begin{align}
+        \mathbb{E} \Bigg[\bigg(\max_{i \in [0, n-1]} \mathbb{E}[|a(\hat{Y}_{t_{i}})|^2 |\mathcal{F}^{\xi}]\bigg)^4\Bigg]
+        &\leq \mathbb{E} \Bigg[ \bigg(k^2 \prod_{i=1}^n \big(1 + \mathfrak{c}_6(\xi_i^2 + \xi_i)\big) \nonumber \\ 
+        &\qquad + \sum_{i=1}^n \mathfrak{c}_6(\xi_i^2 + \xi_i) \prod_{j=i+1}^n \big(1 + \mathfrak{c}_6(\xi_j^2 + \xi_j)\big)\bigg)^4 \Bigg] \\
+        &\leq k^2 \mathbb{E}\Bigg[ \bigg( \prod_{i=1}^n \big(1 + \mathfrak{c}_6(\xi_i^2 + \xi_i)\big)\big(1 +  \sum_{i=1}^n \mathfrak{c}_6(\xi_i^2 + \xi_i) \big) \bigg)^4 \Bigg]\nonumber \\
+         &\leq 8 k^2  \bigg( 1 + n! \,  \mathfrak{c}_6 \bigg(2\dfrac{T^2}{n^2} + \dfrac{T}{n}\bigg)\bigg)^4\bigg(1 + 8 \, \mathfrak{c}_6 \bigg(4!T^4 + 8!\dfrac{T^8}{n^4}\bigg) \bigg).  \nonumber
+    \end{align}
+%\end{equation}
+Since (\ref{eq3_12}) holds, we see that (\ref{eq19}) and (\ref{eq20}) likewise hold, and by thus completing the proof.
+\end{proof}
+\begin{proposition}\label{prop3_5}
+Under the assumption of Theorem \ref{Thm_2_1} we have that 
+\begin{equation*}
+    \mathbb{E} [|\hat{Y}_{T} - \hat{Y}_{t_{n}}|^2] \leq \mathbf{C}_7\sqrt{\dfrac{1}{n}},
+\end{equation*}
+where $\mathbf{C}_7 $ is a positive constant depending on $k$ and $T$ only, $ k \in \mathbb{R}_+, T < \infty$.
+\end{proposition}
+\begin{proof}
+Using the identity, for $n=1, c,g \in \mathbb{R}, (c + g)^{2n} \leq 2^{2n-1}(c^{2n} + g^{2n})$ one obtains
+\begin{equation*}
+    \dfrac{1}{2}|\hat{Y}_{T} - \hat{Y}_{t_{n}}|^2 \leq \bigg|\int^{T}_{t_n} a(\hat{Y}_{\iota(s)})bds \bigg|^2 + \bigg|\int^{T}_{t_n}a(\hat{Y}_{\iota(s-)})d(\Sigma W_s + L_s) \bigg|^2.
+\end{equation*}
+By Lemma \ref{lem2_1}\ref{lemma_1} and Lemma \ref{lemma34}\ref{lemma34_1}, it is clear that the stochastic integral above is a square integrable martingale with respect to $\mathcal{F}^{\xi} \bigvee \mathcal{F}^{X}$. Furthermore, 
+\begin{equation*}
+    \begin{split}
+        \dfrac{1}{2} \mathbb{E} [|\hat{Y}_{T} - \hat{Y}_{t_{n}}|^2] &\leq \mathbb{E} \Bigg[ \bigg| k^2 |T -  t_n| \int^{T}_{t_n} |a(\hat{Y}_{\iota(s)})|^2ds + 2k^2 \int^{T}_{t_n} |a(\hat{Y}_{\iota(s)})|^2ds \bigg|\Bigg]\\
+        &\leq \mathbb{E}\Bigg[  \big(k^2 |T -  t_n|+2k^2\big) \int^{T}_{t_n} |a(\hat{Y}_{\iota(s)})|^2ds \Bigg]\\
+        &\leq k^2 \mathbb{E}\Bigg[  \big(|T -  t_n|+2\big) \int^{T}_{t_n} \mathbb{E}[|a(\hat{Y}_{\iota(s)})|^2|\mathcal{F}^{\xi}]ds \Bigg],
+    \end{split}
+\end{equation*}
+where we have used the square integrability of the integral under consideration together with the It\^o isometry and the Cauchy-Schwartz inequality. Moreover, given that the random grid $(t_{i})_{i \geq 0}$ is  $\mathcal{F}^{\xi}$-measurable, apply the following to the inequality above
+\begin{equation*}
+    \int^{T}_{t_n} \mathbb{E}[|a(\hat{Y}_{\iota(s)})|^2|\mathcal{F}^{\xi}]ds \leq |T -  t_n|\sup_{t \in [T \lor t_n]}\mathbb{E}[|a(\hat{Y}_{\iota(s)})|^2|\mathcal{F}^{\xi}].
+\end{equation*}
+We therefore arrive at 
+%\begin{equation}
+    \begin{multline}\label{eq_swords}
+        \dfrac{1}{2} \mathbb{E} [|\hat{Y}_{T} - \hat{Y}_{t_{n}}|^2] \leq k^2 \Bigg(\mathbb{E} \big[ \big(|T -  t_n|^2 + 2|T-t_n|\big)^2\big]\\
+        \mathbb{E} \bigg[\bigg(\sup_{t \in [T \lor t_n]}\mathbb{E} \big[|a(\hat{Y}_{\iota(t)})|^2|\mathcal{F}^{\xi}\big]\bigg)^2\bigg] \Bigg)^{\frac{1}{2}}.
+    \end{multline}
+        %\end{equation}
+Using Lemma \ref{lem2_1}\ref{lemma_2} and Lemma \ref{lemma34}\ref{lemma34_2}, for the second term on the right-hand side of equation (\ref{eq_swords}) we can write
+\begin{equation}\label{eq_sword1}
+    \begin{split}
+        \mathbb{E} \bigg[\bigg(\sup_{t \in [T \lor t_n]}\mathbb{E} \big[|a(\hat{Y}_{\iota(t)})|^2|\mathcal{F}^{\xi}\big]\bigg)^2\bigg] \Bigg) 
+        &\leq  \mathbb{E} \Bigg[\bigg( \sup_{t \in [0, T]}\mathbb{E} \big[|a(\hat{Y}_{\iota(t)})|^2|\mathcal{F}^{\xi}\big]\\
+        &\qquad+ \max_{i \in [0, n]} \mathbb{E}\big[|a(\hat{Y}_{t_{i}})|^2 |\mathcal{F}^{\xi}\big]\bigg)\Bigg] \leq \mathfrak{c}_7,
+    \end{split}
+\end{equation}
+where $\mathfrak{c}_7 $ is a positive constant depending on $k$ and $T$ only, $ k \in \mathbb{R}_+, T < \infty$. Furthermore, 
+\begin{equation}\label{eq_sword2}
+    \begin{split}
+         \mathbb{E} \big[ \big(|T -  t_n|^2 + 2|T-t_n|\big)^2\big] &\leq 2 \mathbb{E}[|T -  t_n|^4] + 4 \mathbb{E}[|T -  t_n|^2]\\
+         &= 2 \bigg( \dfrac{3T^4(2+n)}{n^3} + \dfrac{2T^2}{n}\bigg),
+    \end{split}
+\end{equation}
+where the above holds  by the assumption $t_n \overset{d}{=} \Gamma(\alpha, \lambda)$ coupled with the inequality $ (c + g)^{2n} \leq 2^{2n-1}(c^{2n} + g^{2n}), n=1, c,g \in \mathbb{R}$. The proof is completed by applying (\ref{eq_sword1}) and (\ref{eq_sword2}) to (\ref{eq_swords}).
+\end{proof}
+\begin{proof}[Proof of Theorem \ref{main_result}]
+We observe that the error in Theorem \ref{main_result} can be split into a hitting and discretization error as in equation (\ref{eq10}). Then the assertion of the theorem, namely, that the convergence rate of the approximation of the Euler-Poisson scheme towards the solution of stochastic differential equation \eqref{eq_major} is of order $O(n^{\frac{-1}{2}})$, is but a corollary following from the combination of Theorem \ref{Thm3_2} and Proposition \ref{prop3_5}.
+\end{proof}
+%\section{Proof of Theorem \ref{main_result}}
+%We observe that the by splitting the error in Theorem \ref{main_result} into hitting and discretization error as in equation (\ref{eq10}), the claim of the paper-which is that the Euler-Poisson scheme converges towards the solution of the L\'evy process (\ref{eq_major}) is of order $O(n^{\frac{-1}{2}})$-is but a corollary that follows from the combination of Theorem \ref{Thm3_2} and Proposition \ref{prop3_5}.
+
+
+%c C  $\mathfrak{c}$ $\mathbf{C}$ 
+
+

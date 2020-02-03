@@ -1,0 +1,202 @@
+\chapter{Overview of Stochastic Differential Equations}
+% \section{Stochastic Differential Equations}
+% \subsection{Existence and Uniqueness}
+% \subsection{Simulation}
+
+\section{Arrival Time of the Poisson Process}
+The Poisson process is an example of stochastic process with discontinuous paths. It has been  by a wide variety of authors such as \morecite{tankov2003financial, sato1999levy, protterstochastic}, as a basis for building of more complex jump processes. Furthermore, the major work of the analysis of the proposed scheme  in this thesis is hinged on the interplay between the arrival and interarrival time of the popular Poisson process. Since both the exponential and the Poisson process share significant relatedness, for completeness, we start by defining the exponential distribution.
+\begin{definition}[Exponential Distribution] A continuous random variable random variable $\xi$ is said to have an exponential distribution with parameter $\lambda > 0$, written as $\xi \sim Exponential(\lambda)$, if its Probability Density Function is given by 
+\begin{equation}
+    f_\xi(x) = \lambda e^{\lambda x}\mathbbm{1}_{x\geq 0}
+\end{equation}
+Moreover, the distribution function of $X$ is given by 
+\begin{equation}
+    F_\xi(x) = \mathcal{P}(\xi \leq x) = 1 - e^{-\lambda x} \qquad \forall x \in [0, \, \infty)
+\end{equation}
+with the moment for any $n \in \mathbb{N}$ obtained by 
+\begin{equation*}
+    \mathbb{E}[\xi^n] = \dfrac{n!}{\lambda^n}
+\end{equation*}
+\end{definition}
+In line with the above, we introduce a stochastic process thus:
+\begin{definition}[Poisson Process]\label{POisson_1}
+A counting process $(N_t)_{t \geq 0}$ is said to be a Poisson process with rate  $\lambda > 0$ if the following conditions are satisfied
+\begin{enumerate}[label=(\roman*)]
+     \item[($p^{\star}$)] $N_0$ = 0
+     \item[($p^{\star \star}$)] $N_t$ has independent increment.
+     \item[($p^{\star \star \star}$)] The number of events in any time interval of length $t > 0$ is Poisson distributed with mean $\mathbb{E}[N_t] = \lambda t$. That is, $N_t - N_s \sim Poisson(\lambda (t-s))$ with 
+     \begin{equation} 
+         \mathcal{P} (N_t = \kappa) = \dfrac{(\lambda t)^\kappa}{\kappa !}e^{-\lambda t}, \qquad \kappa = 1, 2, 3, \ldots 
+     \end{equation}
+\end{enumerate}
+\end{definition}
+The next closely related distribution that would be crucial to our analysis is the notion of Gamma distribution which could be viewed as a generalization of an exponential distribution.
+\begin{definition}[Gamma Distribution]
+A continuous random variable random variable $X$ is said to have an Gamma distribution with shape parameter $\alpha > 0$ and rate parameter $\lambda > 0$, written as $X \sim \Gamma(\alpha, \lambda)$, if its Probability Density Function is given by  
+\begin{equation}
+    f_X(x) = \dfrac{\lambda^{\alpha} x^{\alpha-1} e^{-\lambda x}}{\Gamma (\alpha)}\mathbbm{1}_{x\geq 0}
+\end{equation}
+where $\Gamma (\cdot)$ is the Gamma function.
+\end{definition}
+\begin{remark}\label{remark_Gamma}
+\begin{enumerate}[label=(\roman*)]
+        \item It is noteworthy that if $\alpha = 1$, we recover an exponentially distributed random variable, i.e. $ \Gamma(1, \lambda) \overset{d}{=}  Exponential(\lambda)$.
+        \item One could also show by induction that the sum of $X = \sum_{i=1}^n \xi_i $ independent random variables following an exponential distribution $\xi_i \sim Exponential(\lambda)$ is equal in distribution to a Gamma distribution, that is, $\xi_i \sim \Gamma(\alpha,\lambda), \, for \, i \geq 1$.
+   \end{enumerate}
+\end{remark}
+The intimate relationship between the exponential distribution, Poisson process and gamma distribution is captured in the following proposition.
+\begin{proposition}[Interarrival time for Poisson process]\label{prop_Poisson}
+A counting process is said to be a Poisson process with rate $\lambda > 0$, if 
+\begin{equation}\label{arr_Poisson}
+    N_t = \sum_{n \geq 1} T_i\mathbbm{1}_{(0, t]}, \qquad t \geq 0
+\end{equation}
+for a sequence $(T_i)_{i \geq 1}$ having independent and identically distributed increments $(T_i - T_{i-1})_{i \geq 1} =: (\xi_i)_{i \geq 1}$, where $\xi_i \sim Exponential(\lambda)$. The $T_i$ is called jump or arrival time while the $\xi_i$ is called interarrival time associated with the Poisson process $(N_t)_{t \geq 0}$
+\end{proposition}
+\begin{proof}
+That the process $(N_t)_{t \geq 0}$ is completely determined by its associated arrival times $(T_i)_{i \geq 1}$ is clear from (\ref{arr_Poisson}). Hence, the equivalence of Proposition \ref{prop_Poisson} and Definition \ref{POisson_1} follows from Remark \ref{remark_Gamma}(\textit{ii}) and satisfies ($p^{\star}$)-($p^{\star \star \star}$). While ($p^{\star}$) holds trivially true, for ($p^{\star \star \star}$) we have that 
+\begin{align*}
+\mathcal{P}(N_t = \kappa) &= \mathcal{P}(T_{\kappa} \leq t < T_{\kappa} + \xi_{\kappa + 1} )= \int_0^t \mathcal{P}(\xi_{\kappa + 1}> t-s) \Gamma(\kappa,\lambda) ds\\
+&= \int_0^t e^{-\lambda (t-s)}\dfrac{\lambda^{\kappa} s^{\kappa-1} }{ (\kappa-1)!}e^{-\lambda s} ds = \dfrac{\lambda^{\kappa} }{ (\kappa-1)!}e^{-\lambda t} \int_0^t  s^{\kappa-1} ds\\
+&= \dfrac{(\lambda t)^{\kappa} }{\kappa!}e^{-\lambda t} \qquad \forall t>0, \quad \kappa = 1, 2, 3, \ldots .
+\end{align*}
+Thus showing that $ N_t \sim Poisson(\lambda t)$. Finally it remains to show that increment property of  $(N_t)_{t \geq 0}$ given by ($p^{\star \star \star}$) holds. This clearly follows from memoryless property of the exponential distribution whose proof we omit here but can be found in many literature; for example see \morecite{tankov2003financial}.  
+\end{proof}
+%then the interarrival times $\xi_1,\xi_2,\ldots $ are independent and $\xi_i \sim Exponential(\lambda),$ $\qquad for i = 1, 2, 3, \ldots$
+\section{L\'evy Processes}
+In this section we give the definition of the L\'evy process and other closely related distributions useful for the study of its characteristics as well as its numerical analysis.
+\begin{definition}[L\'evy Processes] A d-dimensional adapted stochastic process $Y = (Y_t)_{t \in [0, \, T]}$ on $(\Omega , \mathcal{F}, (\mathcal{F}_t)_{t \geq 0}, \mathcal{P})$, is a called a L\'evy process if the following conditions are satisfied.
+\begin{itemize}
+    \item $Y_0 = 0 $ a.s.,
+    \item Y is a.s. c\`adl\`ag (i.e. right-continuous with left limits),
+    \item Y has independent increments, i.e., $\forall n \in \mathbb{N} $ and all sequences $0 = t_0 \leq t_1 \leq \ldots t_n < \infty $, $Y_{t_1} - Y_{t_0}, \, \ldots, Y_{t_n} - Y_{t_{n-1}}$ are independent,
+    \item Y has stationary increments, i.e., $\forall s,t \in [0, \, T], s<t, Y_t - Y_s \overset{d}{=} Y_{t-s}$,
+    \item Y is stochastiscally continuous, i.e. $\forall A>0 $, $$ \lim_{s \to t , s<t}\mathcal{P} (|Y_t - Y_s |>A) =0$$
+\end{itemize}
+\end{definition}
+\begin{remark}
+By $(\overset{d}{=})$, we mean what is on the right hand side of the equation is equal in distribution to the left.
+\end{remark}
+
+A very crucial tool to the analysis of distributions of L\'evy Process is the so called characteristic function also called Fourier transform of probability distribution.
+\begin{definition}[Characteristic Function] The characteristic function $\tilde{\Phi}(\vartheta)$ of a probability measure on $\mathbb{R}^d$ is
+\begin{equation}
+    \tilde{\Phi}(\vartheta) = \int_{\mathbb{R}^d} e^{i\langle \vartheta,x \rangle} \Phi(dx), \qquad \vartheta \in \mathbb{R}^d.
+\end{equation}
+Similarly, the characteristic function of the distribution $\mathcal{P}_X$ of a random variable X on $\mathbb{R}^d$ denoted by $\tilde{\mathcal{P}}_X(\vartheta): \mathbb{R}^d \rightarrow  \mathbb{R} $ is given as 
+\begin{equation}
+\tilde{\mathcal{P}}_X(\vartheta) =  \int_{\mathbb{R}^d} e^{i\langle \vartheta,x \rangle}\mathcal{P}_X(dx) = \mathbb{E}[e^{i\langle \vartheta,X \rangle}]
+\end{equation}
+\end{definition}
+Furthermore, another very important notion to the study of L\'evy processes is that of infinitely divisible distribution
+\begin{definition}
+Let $\tilde{\mathcal{P}}^n$ denote the n-fold convolution of a probability measure $\tilde{\mathcal{P}}$ with itself. A probability measure $\tilde{\mathcal{P}}$ on  $\mathbb{R}^d$ is infinitely divisible if  $\forall n \in \mathbb{N}$, there is a probability measure $\tilde{\mathcal{P}}_n$ on $\mathbb{R}^d$
+such that, $$\tilde{\mathcal{P}}^n_n := \underbrace{\tilde{\mathcal{P}}_n * \ldots *\tilde{\mathcal{P}}_n}_\text{n times} = \tilde{\mathcal{P}} $$ 
+\end{definition}
+The following is the famous $\emph{L\'evy-Khintchine formula} $ which gives a representation of the characteristic function of all infinitely divisible distribution.
+\begin{theorem}[\morecite{sato1999levy}, Theorem 8.2 pg. 38] \begin{enumerate}[label=(\roman*)]\label{Thm_LK}
+    \item if $\mathcal{P}$ is an infinitely divisible distribution on $\mathbb{R}^d$, then
+    \begin{equation}\label{inf_div_dist}
+        \tilde{\mathcal{P}}(\vartheta) = exp \bigg[\frac{1}{2}\langle \vartheta, \Sigma \Sigma^T \vartheta \rangle + i\langle a,\vartheta \rangle + \int_{\mathbb{R}^d} \big( e^{i\langle \vartheta,x \rangle } - 1 - {i\langle \vartheta,x \rangle } \mathbbm{1}_{\{||x||\leq1\}} \big) v(dx) \bigg]
+    \end{equation}
+    where $a \in \mathbb{R}^d$, $\Sigma \in \mathbb{R}^{d \times d}-$ symmetric and non-negative matrix, v is a measure on  $\mathbb{R}^d$ satisfying 
+    \begin{equation}\label{cond_inf_div_dist}
+        v(\{0\}) = 0 \qquad and \qquad \int_{\mathbb{R}^d} (1 \land ||x||^2)  v(dx)< \infty.
+    \end{equation}
+    \item The representation of $\tilde{\mathcal{P}}$ in (\ref{inf_div_dist}) by $a, \, \Sigma \, and \, v$ is unique.
+    \item Conversely, if $a \in \mathbb{R}^d$, $\Sigma \in \mathbb{R}^{d \times d}-$ symmetric and non-negative matrix, v is a measure on  $\mathbb{R}^d$ satisfying (\ref{cond_inf_div_dist}), then $\exists \mathcal{P}$ an infinitely divisible distribution whose characteristic function is given by (\ref{inf_div_dist}).
+\end{enumerate}
+\end{theorem}
+\begin{definition}
+The triplet $(a, \, \Sigma, \, v)$ in Theorem \ref{Thm_LK} is called generating triplet. $\Sigma$ and $v$ are called the Gaussian covariance matrix and the L\'evy measure of $\mathcal{P}$ respectively. Whereas if $\Sigma = 0$, $\mathcal{P}$ is called a pure jump L\'evy process.
+\end{definition}
+
+The following gives an explicit representation of the characteristic function of the law of a L\'evy process.
+\begin{proposition}[Characteristic function of a L\'evy process]
+For any L\'evy $(Y_t)_t \in \mathbb{R}^d$, there exist a unique L\'evy triplet $(a, \, \Sigma, \, v)$ such that $\forall t > 0$, 
+\begin{equation*}
+    \mathbb{E}[e^{i\langle z, Y_t\rangle}] = e^{t\Psi(\vartheta)} \qquad \forall \, \vartheta \in \mathbb{R}^d
+\end{equation*}
+where
+\begin{equation}\label{inf_div_dist_levy}
+    \Psi(\vartheta) = -\frac{1}{2}\langle \vartheta, \Sigma \Sigma^T \vartheta \rangle + i\langle a,\vartheta \rangle + \int_{\mathbb{R}^d} \big( e^{i\langle \vartheta,x \rangle } - 1 - {i\langle \vartheta,x \rangle } \mathbbm{1}_{\{|x|\leq1\}} \big) v(dx) 
+\end{equation}
+\end{proposition}
+\subsection{L\'evy-It\^o Decomposition}
+We now turn to the widely used decomposition founded by L\'evy \morecite{levy1934integrales} and completed by It\^o \morecite{tappe2013ito}, popularly called the L\'evy-It\^o decomposition. Much of the analytic difficultly in the treatment of   L\'evy processes stems from the fact that the jump of a  L\'evy process denoted by $\Delta X_t := X_t - X_{t-}$ with absolute sum $\sum_s |\Delta X_s| $ can be infinite on a finite time interval $[0,\,T]$. That stated, the L\'evy-It\^o decomposition describe the possible ways of approximating serving as a vital tool for alleviating this problem. In order to describe this, we will proceed to state the generic representation before a formal definition for the particular case that shall be employed in this thesis is given. As a rudiment,  we define a Poison Random Measure (PRM) leading to L\'evy measure, which by the  L\'evy-It\^o decomposition has a useful intuitive interpretation for the understanding of L\'evy processes.
+\begin{definition}[Poison Random Measure (PRM)]
+Let the set $\mathbb{S} \subset \mathbb{R}^d$ be bounded, and $B(\mathbb{S}) = \{ B \cap \mathbb{S} : B \in \mathcal{B}(\mathbb{R}^d) \}$, and let $B_0(\mathbb{S})$ denote all bounded sets in $B(\mathbb{S})$. A stochastic process $(N(A))_{A \in B_0(\mathbb{S})}$ is said to be a PRM on $\mathbb{S}$ with intensity measure $\ell$ if 
+\begin{itemize}
+    \item $N(\emptyset) = 0$
+    \item For all pairwise disjoint sets $\{ A_i\} \, B_0(\mathbb{S})$, such that $\cup A_i$ is bounded,
+    $\{ N(A_i), i = 1, 2, 3, \ldots \}$ are independent and 
+    \begin{equation}
+        N\Bigg( \bigcup_{i=1}^{\infty} A_{i} \Bigg) = \sum_{n=1}^{\infty} N(A_i) \, a.s.
+    \end{equation}
+    \item For all $A \in B_0(\mathbb{S}) \, N(A)$, has a Poisson distribution $\ell(A)$, that is,
+    \begin{equation}
+        \mathcal{P}(N(A) = \kappa) = \dfrac{\ell(A)^\kappa}{\kappa !}e^{-\ell(A)}, \qquad \kappa = 1, 2, 3, \ldots 
+    \end{equation}
+    \end{itemize}
+\end{definition}
+\begin{remark}
+\begin{enumerate}
+    \item A PRM is N can be represented as the sum of Dirac masses $\delta$ at random points$(V_i)_{i\geq1}, \, V_i: \Omega \to \mathbb{S}$ given by $$N(A) = \sum_i \delta_{V_i}(A)$$
+    \item If this is the case, $N(A)$ is wrritten symbolically as $N$ defined as $$N = \sum_i \delta_{V_i}$$ in which case the PRM is called a Poisson Point Process.
+\end{enumerate}
+\end{remark}
+\begin{definition}
+The compensated PRM denoted by $\tilde{N}(A)$ is defined as $\tilde{N}(A) = N(A) - \mathbb{E}[N(A)].$
+\end{definition}
+\begin{definition}[Jump Measure]
+Let $V$ be  $\mathbb{R}^d-$valued c\`adl\`ag process the jump measure of $V$ is a random measure on $\mathcal{B}((0, \, \infty) \, \times \, \mathbb{R}^d)$ defined by 
+\begin{equation}
+    N_V(A) = n\{t \, ; \, \Delta V_t \neq 0 \, and  \, (t, \, \Delta V_t) \, \in A \}
+\end{equation}
+\end{definition}
+is called a jump measure where $n$ denotes number. Thus the jump measure counts the number of jumps of $V$ on compact time interval that falls into set $A$. The L\'evy measure is builds on this and is defined as follows.
+\begin{definition}[L\'evy measure]
+Let $V$ be  $\mathbb{R}^d-$valued L\'evy process. The measure of $v$  defined by 
+\begin{equation}
+    v(A) = \mathbb{E}[n \{t \, \in [0, 1]; \, \Delta V_t \neq 0 \, and  \, \Delta V_t \, \in A \}], \qquad A \, \in \, \mathcal{B}(\mathbb{R}^d)
+\end{equation}
+is called a L\'evy measure.
+\end{definition}
+Thus by L\'evy-It\^o Decomposition, the L\'evy measure of a Borel set is equal to the expected number of jumps in a time interval $[0\, 1]$ with jump sizes in the Borel set. The jumps are described by the so called PRM.\\
+
+The L\'evy-It\^o decomposition is stated in the following propositions.
+\begin{proposition}[L\'evy-It\^o decomposition \morecite{tankov2003financial}, Theorem 1, pg.11] \label{levy_Ito_decop}
+Let $X = (X_t)_{t\geq0}$ be $\mathbb{R}^d-$valued L\'evy process, with L\'evy measure $v$. Then 
+\begin{enumerate}
+    \item The jump measure $N_X$ of $X$ is a Poison random measure on $[0 \, \infty) \times \mathbb{R}^d$ with intensity $dt \times v$.
+    \item The L\'evy measure $v$ satisfies $\int_{\mathbb{R}^d} (1 \land |x|^2)  v(dx)< \infty$.
+    \item There exist $\gamma \, \in \, \mathbb{R}^d$ a $d-$dimensional Brownian Motion $W$ and covariance matrix $\Sigma$ such that 
+    \begin{align}
+         X_t &= \gamma t + \Sigma W_t + X^{(1)}_t + X^{(2)}_t \label{eq_215} \\ 
+         \intertext{where}
+        X^{(1)}_t &= \int_0^t \int_{|x| \geq 1} x N_X (ds \times dx)  \label{eq_216} \\ 
+        X^{(2)}_t &= \lim_{\epsilon \downarrow 0} \int_0^t \int_{|x| \in [\epsilon \, 1)} x (N_X (ds \times dx) - v (dx)ds) \label{eq_217} \\ 
+        &=:  \int_0^t \int_{|x| \in [\epsilon \, 1)} x \tilde{N}_X (ds \times dx). \label{eq_218}
+     \end{align}
+     for $\epsilon \in \mathbb{R}_+ $
+\end{enumerate}
+The three terms are independent and the convergence in the last convergence in the last term is almost sure and uniform in $t$ on compacts. The triple $( \gamma,\, v,\, \Sigma)$ is called the characteristic triple of $X$.
+\end{proposition}
+\begin{proof}
+See \morecite{tankov2003financial}
+\end{proof}
+\begin{remark}
+The mean value of $X_1$ exist if and only if (cf. Sato, 1999 pg.39) $$\int_{|x| > 1}  |x| v(dx)< \infty$$ in which case we can recast setting $\mathbb{E}[X_t]=: bt$ the representation (\ref{eq_215})-(\ref{eq_218}) can be recast as 
+\begin{equation}\label{eq_219}
+    X_t = bt + \Sigma W_t + \int_0^t \int_{\mathbb{R}^d} x \tilde{N}_X (ds \times dx)
+\end{equation}
+where the integral on the right hand side of (\ref{eq_219}) is the compensated jump of $X$
+\end{remark}
+
+\begin{interpretation}The jumps of $X$ are contained in the discontinuous processes $ X^{(1)}_t$ and $ X^{(2)}_t$. While the sum $$ X^{(1)}_t = \sum_{s \in [0,t]} \Delta X_s \mathbbm{1}_{\{|\Delta X_s|\geq 1\}} $$ contains almost sure finite number of terms and is a well defined Compound Poisson process, the compensated jump integral $X^{(2)}_t$ is centered with $\epsilon \to 0$ to avoid divergence since the jump measure $v$ can have singularity at 0. Moreover $ X^{(2)}_t$ is a martingale by definition.
+The implication of this as stated by \morecite{tankov2003financial} is that every L\'evy process can be approximated with arbitrary precision by sum of Brownian motion with drift and a Compound Poisson process.
+Additionally from (\ref{eq_215}), if we set $$A_t = bt + X^{(1)}_t$$ and $$M_t = \Sigma W_t + X^{(2)}_t,$$ it follows that every L\'evy process is a semimartingale. This is because $M$ is by definition a martingale while The condition $\int_{|x| > 1} v(dx)< \infty$ verifies that $X$ has a finite number of jumps with absolute value larger than 1 thus $A$ is of finite variation (see \morecite{barndorff2012basics} and the references given therein).
+\end{interpretation}
+    %\begin{enumerate}[label=(\roman*)]
+  %      \item
+  %  \end{enumerate}
+  

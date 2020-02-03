@@ -1,0 +1,122 @@
+\chapter{Introduction}
+\section{Preview}
+Stochastic differential equations play important roles in modeling quantitative phenomena. Their field of application includes but is not limited to: Physics \morecite{feller1951diffusion}, Biometrics \morecite{barndorff2012levy}, modeling contingencies in Actuarial Sciences as well as valuation of financial instruments and entities in the field of Finance \morecite{black1973pricing}. Particularly, the ever evolving nature of financial markets around the world is synchronized with an increase in its risk characteristics, which requires the use of sophisticated models that are robust enough to capture such dynamics; hence the prominence of  L\'evy driven stochastic differential equations in the discipline of Financial Mathematics; see for example, \morecite{tankov2003financial}.
+
+In this thesis, we are interested in the discrete approximation of the stochastic process \break $Y=(Y_t)_{t \in [0, T]}$; defined on the filtered probability space $(\Omega , \mathcal{F}, (\mathcal{F}_t)_{t \geq 0}, \mathcal{P})$; which is the strong solution to
+\begin{equation}\label{first_eq}
+      Y_t = y_0  + \int_0^t a(Y_{s-})dX_s \qquad t \in [0, \, T],
+\end{equation}
+with $T < \infty$, $y_0  \in \mathbb{R}^d$, $a : \mathbb{R}^d \to \mathbb{R}^{d \times d}$ and $X=(X_t)_{t\in [0,T]}$ is a $d$-dimensional L\'evy process (see \Cref{Section_Levy} for more details on \eqref{first_eq}). Since only a class of \eqref{first_eq} admits closed form solutions, it is important to construct discrete time  approximations. In our case, we consider a discrete time  approximation of $Y$, the solution of \eqref{first_eq}, constructed on the time discretization with maximum step size $\delta \in (0, \delta_0)$, where $\delta_0 \in (0, \, 1)$. We adopt the following in accordance with \morecite{tankov2003financial} and \morecite{jum2015numerical}: if the jump times of the driving process $X$ are not included in the time discretization, then such a discretization is called \emph{regular}; if on the other hand, the jump times are included in the time discretization, such discretization is termed \emph{jump-adapted}. For this reason, the method which constructs a discrete-time approximation on a regular time discretization is called a \emph{regular scheme}; whereas the one constructed on jump-adapted time discretization is \emph{jump-adapted scheme}. Furthermore, a widely used measure of efficiency of a discretization scheme is its order of convergence, which is a measure of the rate at which a discrete approximation converges to a true one in a certain sense. The two commonly used modes of convergence in literature are the \emph{strong} order and the \emph{weak} order of convergence (for example, see,  \morecite{glasserman2013monte}).
+\begin{definition}
+A discrete time approximation $Y^*_{{T}}$ constructed on a grid $0 = t_0 \leq t_1 \leq \cdots \leq t_n \leq T $ with a maximum step size $\delta >0$, converges with strong order $p$ at time $T$ to the solution $Y$ of a given stochastic differential equation, if there exists a positive constant $\mathbf{C}$, independent of $\delta$, and a finite number $\delta_0 \in (0, \, 1)$, such that
+\begin{equation}\label{strong_Error}
+    \mathbb{E}[|Y_T - Y^*_{{T}}|^2] \leq \mathbf{C}\delta^{2p},
+\end{equation}
+for all $\delta \in (0, \delta_0)$.
+\end{definition}
+\begin{definition}\label{Def_WeakE}
+A discrete time approximation $Y^*_{{T}}$ constructed on a grid $0 = t_0 \leq t_1 \leq \cdots \leq t_n \leq T $ with maximum step size $\delta >0$, converges with weak order $\beta$ at time $T$ to the solution $Y$ of a given stochastic differential equation, if for a sufficiently smooth function $g$, there exists a positive constant $\mathbf{C}$, independent of $\delta$, and a finite number $\delta_0 \in (0, \, 1)$, such that 
+\begin{equation}
+    |\mathbb{E}[g(Y_T) - g(Y^*_{{T}})]| \leq \mathbf{C}\delta^{\beta},
+\end{equation}
+for all $\delta \in (0, \delta_0)$.
+\end{definition}
+The most frequently encountered numerical scheme for the approximation of \eqref{first_eq}, if $X=(X_t)_{t\in [0,T]}$ is a Wiener process, is the Euler scheme on an equally-spaced time grid $0 = t_0 < t_1 < \cdots < t_n = T$, of the interval $[0, \, T]$ which is given by
+\begin{equation}\label{Euler_Scheme}
+Y^*_{t_{i}} := Y^*_{t_{i-1}} + a(Y^*_{t_{i-1}})(X_{t_{i}} - X_{t_{i-1}})  \qquad \qquad
+  \hat{Y}^*_0 = y_0 \qquad \qquad  i \in [0, \, n],
+\end{equation}
+where $n\in \mathbb{N}$ and $t_i := iT/n$. The increments $X_{t_{i}} - X_{t_{i-1}}$ of the Wiener process $X$ are independent and identically distributed random variables that follow a normal distribution and, thus, these increments can be simulated by a closed form formula. By contrast, there are no closed formula for the simulation of L\'evy processes in general, which makes it somewhat difficult to simulate the paths of  $Y$ using  \eqref{Euler_Scheme}. This in turn has inspired novel ideas from various scholars in different fields where \eqref{first_eq} constitutes a vital modeling tool. 
+
+\section{Literature Review}
+The case where $X$ is a Brownian motion has enjoyed rich scholarly work. We refer the reader to \morecite{kloeden2013numerical} for a comprehensive treatment of numerical approximations of \eqref{first_eq} of the mentioned case. The literature on weak numerical approximation of \eqref{first_eq} is scarce, and even less extensive when it comes to strong numerical approximations.
+
+The standard work on discrete-time approximation of \eqref{first_eq} goes back to \morecite{protter1997euler}, in which various conditions under which the weak convergence rates of \eqref{Euler_Scheme} realistic were considered. There, it is required that the function $g$ \break (cf. Definition \ref{Def_WeakE}) satisfies the regularity condition $g \in \mathcal{C}^4(\mathbb{R})$  with additional impositions on the first moment of $X$ in order to show the order of convergence of \eqref{Euler_Scheme} is $O(n^{-\frac{1}{2}})$, provided that the increments of the driving L\'evy process are available. Similarly, in  \morecite{jacod2005approximate} the increments of $X$ were approximated by independent and identically distributed random variables and the associated weak order of convergence was shown. The strong error \eqref{strong_Error}; on the other hand, according to \morecite{ferreiro2016euler} can be inferred from \morecite{dereich2011multilevel}  to be of the order $O(n^{-1})$ under the assumptions of finite second moments of $X$.
+
+Since the simulation of L\'evy processes is not generally straightforward and an extra source of error has to be incorporated into the convergence rates due to the approximation, the aforementioned convergence rates are therefore theoretical. 
+
+A more frequently encountered approach which relies on the L\'evy-It\^o decomposition is to approximate $X$ by a jump-diffusion process, that is, a L\'evy process that can be expressed as the sum of a linear Brownian motion plus an independent compound Poisson process. This approximation entails the truncation of the L\'evy measure, removing all small jumps below a certain threshold in magnitude and compensating for their removal by making appropriate adjustment to the linear and/or Gaussian component. The truncation of small jumps ensures that the remaining jumps conform to a compound Poisson structure. Hence one is left with the task of simulating the paths of a linear Brownian motion interlaced with jumps that are  distributed according to a normalized truncated L\'evy measure arriving at an appropriate Poissonian rate (cf. Section 2, \morecite{ferreiro2014multilevel}). 
+
+For instance, \morecite{rubenthaler2003numerical} approximated $X$ by a suitable compound Poisson process using the jump time of the compound Poisson process as discretization points by thus obtaining a weak numerical approximation of \eqref{first_eq}. This scheme however performs poorly when the driving  L\'evy measure has strong singularity at the origin, i.e., when the jump component has path of infinite $p$-variation, with $p$ close to 2.
+Furthermore, \morecite{dereich2011multilevel} take the approach of truncating small jumps in their design of Multilevel Monte Carlo simulation for the L\'evy driven stochastic differential equation \eqref{first_eq}. There, it is observed that when the jump components of the driving process $X$ is of finite variation, one may reasonably replace the jumps by a linear trend. On the other hand, if the jump component of $X$ is of infinite variation, an appropriate approximation is to replace small jumps by a Gaussian process. The shortcomings of this method are discussed in \morecite{asmussen2001approximations}.
+
+Finally, the most recent method of simulation which is attracting increasing attention is the concept of Multilevel Monte Carlo simulation introduced by \morecite{giles2008multilevel} and applied to a jump-diffusion model in \morecite{xia2012multilevel}. The Multilevel Monte Carlo simulation has witnessed a suitable application to the Wiener-Hopf factorization for L\'evy processes, see, for example, \morecite{kuznetsov2011wiener}. The Wiener-Hopf factorization for L\'evy processes entails the decomposition of the paths of a L\'evy process in terms of the running infimum and running supremum. In  \morecite{ferreiro2014multilevel} this factorization is used to sample from the bivariate distribution of $(X_t, \sup_{s<t}X_s)$ by constructing a random walk approximation, with the choice of the time steps according to an exponential distribution, i.e., the arrival time of a Poisson process.\newpage
+
+\section{Aims and Objectives}
+The earlier mentioned Wiener-Hopf Multilevel Monte Carlo simulation performed by \morecite{ferreiro2014multilevel} effectively constructs a numerical path of $X$; based on this exposition, this thesis aims to investigate the performance of this numerical solution when applied in order to obtain numerical approximation of \eqref{first_eq}. Albeit the scheme constructs a random walk approximation of paths that captures both the the end point and supremum over each exponentially distributed time step; here, we shall only consider an Euler scheme for the solution $Y_T$ of \eqref{first_eq} at the end point $T$ only. In this case, our proposed scheme can be thought of as a random modification of the Euler scheme, where we assume that we can sample exactly from the distribution of  $X_{\xi(n/T)}$. $\xi(n/T)$ are the exponentially distributed time steps, with mean $n/T$, independent of $X$. More precisely, the grid points in our Euler-Poisson scheme are dictated by a Poisson point process with rate $n/T$ denoted by $\mathcal{N}(n/T)$, where the mean $T/n$ plays the role of the grid size. The analysis in this thesis does not assume any specific way of obtaining the distribution of $X_{\xi(n/T)}$ and there is no reason why it should demand a lesser degree of technicality than would $X_1$ for general L\'evy processes.
+
+That notwithstanding, the meromorphic class is a large class of of L\'evy processes that have enjoyed contributions from the likes of \morecite{kuznetsov2012meromorphic}. This class provides one with processes whose Weiner-Hopf factors are explicit, hence there is the possibility of sampling from the distribution of $X_{\xi(n/T)}$. Additionally, several popularly used L\'evy processes in finance can be approximated by the Meromorphic class of L\'evy processes (cf. \morecite{corcuera2011efficient}) (see \Cref{Sect_Merom} for examples). Hence, the proposed scheme can be taken as an alternative to dealing with stochastic differential equations driven by such financial models, whilst preserving the stylized properties for the driving process.
+
+In contrast to the more classical methods mentioned thus far, it is worth mentioning that the advantage of our numerical approximation is that approximation given by our scheme does not depend on the jump structure of $X$. The main result of this thesis derives the rate of convergence for the mean squared error for the approximation $\tilde{Y}_n$ of $Y_T$ obtained through the Euler-Poisson scheme, showing that $\mathbb{E}[|Y_T - \tilde{Y}_n|^2]= O(n^{-\frac{1}{2}})$.
+
+It shall also be shown that our algorithm tracks closely the classical discretization scheme for the partial integro-differential equation associated with computing $\mathbb{E}[g(Y_T)]$ for a given function $g$. 
+
+The rest of the thesis is structured as follow. In Chapter two, we give a general overview of L\'evy processes, introducing the tools needed to perform the numerical analysis of \eqref{first_eq} and set up notation and terminologies. Furthermore, we introduce the notion of meromorphic L\'evy processes with applicable examples, and finally outlay the our Euler-Poisson discretization scheme. Since we are interested in numerical approximation of a given L\'evy driven stochastic differential equation, Chapter three is devoted to the numerical analysis of our scheme  where the convergence rate in the mean square error is derived. Chapter four is intended to motivate the investigation of the feasibility of our scheme, we thus collect several remarks and observations regarding feasibility, and extensions and its relation with partial integro-differential equations; the simulation result is also presented in the same chapter. Finally, the Appendix collects some standard inequalities as well as the simulation code.
+
+% \section{Aims and objetctives}
+% \section{Examples of L\'evy Processes}
+% We define an SDE called a generic L\'evy as a starting point.
+% \begin{definition}[Generic SDE]
+% Let a stochastic process, $Y = (Y_t)_{t \in [0, \, T]}$ a solution to the SDE
+% \begin{equation}\label{generic_Levy}
+%     Y_t = y_0 + \int_0^t b(Y_s)ds + \int_0^t \sigma(Y_s)dW_s + \int_0^t a(Y_{s^-})dX_s \qquad t \in [0, \, T],
+% \end{equation}
+% where $b : \mathbb{R}^n \to \mathbb{R}^n,$ $\sigma :\mathbb{R}^n \to \mathbb{R}^{n \times d}$ and $a : \mathbb{R}^n \to \mathbb{R}^{n \times d}.$ are Lipsichtz functions, $X$ is a $d$-dimensional jump of L\'evy process which is independent of  $d$-dimensional Brownian Motion $W$.
+% \end{definition}
+% The following process shall be studied in this thesis.
+% \begin{definition}[L\'evy driven Stochastic Differential Equation]
+% If we set $b= 0$, and $\sigma = 0$ in (\ref{generic_Levy}) we obtain 
+% \begin{equation}\label{eq_1}
+%   Y_t = y_0  + \int_0^t a(Y_{s^-})dX_s \qquad t \in [0, \, T].
+% \end{equation}
+% where $a : \mathbb{R}^n \to \mathbb{R}^{n \times d}.$ is a Lipschitz function and $X$ is a $d$-dimensional jump of L\'evy process.
+% This is referred to in literature as L\'evy driven Stochastic Differential Equation and is adopted through out this work.
+% \end{definition}
+% \subsection{Examples of Meromorphic  L\'evy processes}\label{ibr}
+% \begin{example}[The Compound Poisson Process] 
+% Let $Y = (Y_n)_{n \in \mathbb{N}}$ be a sequence of i.i.d. random variables in $\mathbb{R}^d$ with common distribution $\mu_Y$. Let $N_t$ be the Poisson process as in Definition \ref{POisson_1} independent of $Y$
+% The process $Z$ defined as
+% \begin{equation*}
+%     Z_t = \sum_{k=1}^{N_t} Y_k \qquad \qquad for \, all \quad t \geq 0
+% \end{equation*}
+% is said to be a compound Poisson process.
+% \end{example}
+% \begin{example}[$\beta$-family of L\'evy Processes]
+% A L\'evy Process $Z =(Z_t)_{t \geq 0}$ in $\mathbb{R}^d$ with the generating triplet $(b, \, \Sigma,\, v)$ is said to belong to the $\beta$-family if its jump density is given by
+% \begin{equation}
+%     v(x) = c_1 \dfrac{e^{-\alpha_1 \beta_1 x}}{(1 -\beta_1 x)^{\lambda_1}}\mathbbm{1}_{\{x > 0\}} + c_2 \dfrac{e^{-\alpha_2 \beta_2 x}}{(1 -\beta_2 x)^{\lambda_2}}\mathbbm{1}_{\{x > 0\}}
+% \end{equation}
+% where $\alpha_i, \beta_i > 0 $, $c_i \geq 0$, $\lambda_{i} \in (0, 3)$, $i = 1, 2.$, with L\'evy-Khintchine representation given as 
+% \begin{equation*}
+%     \Phi(\vartheta) = \dfrac{\Sigma^2}{2}\vartheta + i \rho \vartheta - \dfrac{c_1}{\beta_1}\mathcal{K} \bigg(\alpha_1 - \dfrac{i\vartheta}{\beta_1}, 1 - \lambda_1 \bigg) - \dfrac{c_2}{\beta_2}\mathcal{K} \bigg(\alpha_2 - \dfrac{i\vartheta}{\beta_2}, 1 - \lambda_2 \bigg) + \varrho
+% \end{equation*}
+% where 
+% \begin{equation*}
+%     \begin{aligned}
+%          \varrho &= \dfrac{c_1}{\beta_1}\mathcal{K} (\alpha_1, 1 - \lambda_1) + \dfrac{c_2}{\beta_2}\mathcal{K}(\alpha_2, 1 - \lambda_2),\\
+%          \rho &= \dfrac{c_1}{\beta_2^2}\mathcal{K}(\alpha_1, 1 - \lambda_1) (\mathcal{K}^\prime(1 + \alpha_1 - \lambda_1) - \mathcal{K}^\prime(\alpha_1 ))\\
+%          &\qquad - \dfrac{c_2}{\beta_2^2}\mathcal{K}(\alpha_2, 1 - \lambda_2) (\mathcal{K}^\prime(1 + \alpha_2 - \lambda_2) - \mathcal{K}^\prime(\alpha_2)) - b
+%     \end{aligned}
+% \end{equation*}
+% with $b, \Sigma \in \mathbb{R}$, $\mathcal{K}(x, y) = \Gamma(x) \Gamma(y) / \Gamma(x + y)$ and $\mathcal{K}^\prime(x) = \frac{d}{dx}\log\Gamma(x)$; $\Gamma(\cdot)$ is the conventional Gamma function.\\
+% If we let $\beta \to 0^+$ and let 
+% \begin{enumerate}[label=(\roman*)]
+%     \item $\lambda_{1} = \lambda_{2}$, the resulting processes is called tempered stable processes. 
+%     \item $c_1 = c_2$, $\lambda_{1} = \lambda_{2}$ and $ \beta_1 =  \beta_2$, the jump density converges to that of CGMY processes.
+%     \item $c_1 = c_2 = 4$, $ \beta_1 =  \beta_2 = 1/2$,  $\lambda_{1} = \lambda_2 = 2$, $\alpha_1 = 1- \alpha$, $\alpha_2 = 1 + \alpha$, the obtained process is a process with jumps of infinite variation. 
+% \end{enumerate}
+% \begin{remark}
+% For a detailed treatment and simulations of the given examples, see \morecite{kuznetsov2012meromorphic, kuznetsov2011wiener, ferreiro2015applying}. 
+% \end{remark}
+
+% \end{example}
+% In the following segment, we discuss the examples of Levy processes where the proposed Euler-Poisson scheme may be possibly applied.
+
+% \subsection{Memophic Levy Processes}
+% One large family of such processes is the $\beta$-class Levy processes which we are described accordingly in the examples that follows. \cite{tankov2003financial} has them in abundance.
+% \section{The discretization scheme for L\'evy driven Stochastic Differential Equations}
+% Discuss replacing Z by Euler its benefits and shortcomings and discuss the shortcomings of levy leading to general literature review as it has been researched and ameliorated by others...
+% \subsection{Euler Discretization Scheme}
+% \subsection{Simulation of Levy processes}
+
+% \section{Literature Review}

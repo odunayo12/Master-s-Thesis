@@ -1,0 +1,58 @@
+\begin{appendices}
+\chapter*{Appendix}
+\section{Standard Inequalities}
+\subsection{Gronwall's Inequality}
+\begin{theorem}\label{Append_Gron_ineq}
+Let $\alpha$ and $f$ be nonnegative, continuous functions defined for $t \in [0, \, T]$, and let $\mathbf{C}_0 \geq 0$ denote a constant. If
+\begin{equation}
+    \alpha(t) \leq \mathbf{C}_0 + \int^t_0 f \alpha ds, \qquad\qquad for \, all \quad t \in [0, \, T],
+\end{equation}
+then
+\begin{equation}
+    \alpha(t) \leq \mathbf{C}_0 e^{\int^t_0 f ds}, \qquad\qquad for \, all \quad t \in [0, \, T].
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set 
+\begin{equation*}
+    \beta(t) :=  \mathbf{C}_0 + \int^t_0 f \alpha ds.
+\end{equation*}
+Then $\beta^\prime = f \alpha \leq f \beta$, and so
+\begin{equation*}
+    \bigg(\beta \, e^{-\int^t_0 f ds}\bigg)^\prime = (\beta^\prime - f \beta)e^{-\int^t_0 f ds} \leq (f \alpha - f \alpha)e^{-\int^t_0 f ds} = 0.
+\end{equation*}
+Therefore 
+\begin{equation*}
+    \beta (t) e^{-\int^t_0 f ds} \leq \beta (0) e^{-\int^t_0 f ds} = \mathbf{C}_0,
+\end{equation*}
+and thus 
+\begin{equation*}
+    \alpha(t) \leq \beta(t) \leq \mathbf{C}_0 e^{-\int^t_0 f ds}.
+\end{equation*}
+\end{proof}
+
+
+\subsection{Doob's Inequality}
+\begin{theorem}
+Let $(M_t)_{t \geq 0}$ be a continuous martingale with respect to the filtration $(\mathcal{F}_t)_{t \geq 0}$ defined on $(\Omega , \mathcal{F}, \mathcal{P})$. If $p > 1$, $T > 0$ and  $\mathbb{E}[|M_T|^p] \leq +\infty$, then we have that
+\begin{equation}\label{Append_Doob_ineq}
+    \mathbb{E}\big[\sup_{t \in [0, \, T]}|M_t|^p\big]  \leq \bigg( \dfrac{p}{p-1}\bigg)\mathbb{E}[|M_T|^p].
+\end{equation}
+\end{theorem}
+\begin{proof}
+See \morecite{protter2005stochastic}, Theorem 74, p. 226.
+\end{proof}
+%https://fabricebaudoin.wordpress.com/2012/04/10/lecture-11-doobs-martingale-maximal-inequalities/
+\subsection{Cauchy-Schwartz Inequality}
+The following which is an implication of the Cauchy-Schwartz Inequality taken from \morecite{choe2016stochastic}.
+\begin{theorem}
+Let $g : [0, t] \to \mathbb{R}^n$. For any $t > 0 $ we have that 
+\begin{equation}\label{Appendix_CS}
+    \bigg| \int^t_0 g \, ds  \bigg|^2 \leq t \int^t_0 |g|^2 ds.
+\end{equation}
+\end{theorem}
+
+
+\section{Simulation Code}
+\lstinputlisting{images/EP.m}
+\end{appendices}

@@ -1,0 +1,216 @@
+\documentclass[oneside, 12pt]{scrreprt}
+\usepackage[german, english]{babel}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{dsfont}
+\usepackage{bigints}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{leftidx}
+\usepackage[utf8]{inputenc}
+\inputencoding{latin1}
+\usepackage[inline]{enumitem}
+\usepackage[hyperref,backend=biber,backref,backrefstyle=none]{biblatex}
+\usepackage{bbm}
+\usepackage[toc]{appendix}
+%\usepackage{mcode}
+%\usepackage{draftwatermark}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    %filecolor=magenta,      
+    %urlcolor=cyan,
+}
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{interpretation}[theorem]{Interpretation}
+\newtheorem{assumption}{Assumption}
+\newtheorem{notation}{Notation}
+\def\figurename{\footnotesize Bild}
+\crefname{subsection}{subsection}{subsections}
+
+%\newcommand{\ind}{\vspace*{0.1ex}\underline{\mbox{ } || \mbox{ }}\vspace*{-0.1ex}}
+\newcommand{\ind}{\perp\hspace*{-1ex}\perp}
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bZ}{\mathbb{Z}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bE}{\mathbb{E}}
+\newcommand{\bC}{\mathbb{C}}
+\newcommand{\bF}{\mathbb{F}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cZ}{\mathcal{Z}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cIS}{\mathcal{IS}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\halmos}{\quad\hfill\mbox{$\Box$}}
+\newcommand{\cov}{\mbox{\rm Cov}\,}
+\newcommand{\cor}{\mbox{\rm Cor}\,}
+\newcommand{\var}{\mbox{\rm Var}\,}
+\newcommand{\supp}{\mbox{\rm supp}\,}
+\newcommand{\barR}{\overline{\bR}}
+\newcommand{\barB}{\overline{\cB}_1}
+\newcommand{\mbb}{\mathbb}
+\newcommand{\One}{\mathds{1}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\BB}{\mathbb{B}}
+\newcommand{\VAR}{\mbox{V@R}}
+\newcommand{\AVAR}{\mbox{AV@R}}
+\newcommand{\one}{\mathds{1}}
+
+\DeclareCiteCommand{\morecite}[\mkbibbrackets]
+  {\usebibmacro{prenote}}%
+  {\usebibmacro{citeindex}%
+   \printnames{labelname}%
+   \setunit{\addcomma\space}
+   \usebibmacro{cite}}
+  {\multicitedelim}%
+  {\usebibmacro{postnote}}
+
+
+\usepackage{listings}
+\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,100,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+
+\addbibresource{Reference.bib}
+\DeclareNameAlias{default}{last-first}
+\setcounter{chapter}{0}
+%\setcounter{secnumdepth}{0}
+\begin{document}
+
+\lstset{language=Matlab,%
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},    
+}
+
+
+
+\begin{titlepage}
+\includegraphics[height=1.8cm]{images/unilogo_bild}
+\hfill
+\includegraphics[height=1.8cm]{images/unilogo_wort}\\[1em]
+
+\pagenumbering{gobble}
+\thispagestyle{empty}
+\textwidth28cm
+\begin{center}
+{\Large\bfseries Ulm University\\
+   Faculty of Mathematics and Economics\\
+}
+\vspace{3cm}
+{\LARGE\bfseries
+An Euler-Poisson Scheme for L\'evy driven Stochastic Differential Equations
+\\
+}
+\vspace{1cm}
+{\Large
+Master's Thesis} \\
+\bigskip % nach löschen dieser Zeile ein \bigskip einfügen.
+{\Large in Finance}
+\end{center}
+\vspace{1.5cm}
+\begin{center}
+by \\
+$\mbox{Odunayo O. Rotimi}$ \\
+$\mbox{August 19, 2019}$\\
+
+\vspace*{1.2cm}
+\textbf{ Advisors} \\
+
+$\mbox{Prof. Dr. Robert Stelzer}$\\
+$\mbox{Prof. Dr. Mitja Stadje}$
+\end{center}
+\vfill
+\end{titlepage}
+${ }$
+\let\cleardoublepage\clearpage
+%\newpage
+
+%\chapter*{Dedication}
+%To Jesus Christ, the source of all refreshing in a dry and thirsty land.
+ 
+
+\thispagestyle{empty}
+\setcounter{page}{0}
+\tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1} \normalsize
+\include{introduction}
+\include{Chapter_2}
+\include{Chapter_3}
+\include{Chapter_4}
+
+
+
+%\appendix
+\include{Appendix}
+%\addcontentsline{toc}{section}{Appendices}
+
+%\addcontentsline{toc}{chapter}{Appendix}
+%\input{erklaer}
+%\input{chapter_5}
+%\input{chapter_4}
+
+
+
+
+
+${ } $
+
+
+
+%\pagenumbering{arabic}
+%\setcounter{page}{1} \normalsize
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\input{chapter_1}
+%\input{kapitel7}
+%\input{kapitel8}
+%\input{kapitel9}
+%\setcounter{chapter}{9}
+%\nocite{*}
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography
+\chapter*{Declaration}
+I declare that I have authored this thesis independently, that I have not used other than the declared sources, and that I have explicitly marked all material which has been quoted either literally or by content from the used sources. I furthermore declare that this thesis has not been submitted to any other board of examiners yet.
+
+\end{document}
